@@ -1,12 +1,14 @@
 '''All the functions for validating users.'''
 
 import os
-import cv2
 import time
+
+import cv2
 import numpy as np
 from PIL import Image
-from picamera.array import PiRGBArray
+
 from picamera import PiCamera
+from picamera.array import PiRGBArray
 
 cascadePath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascadePath)
@@ -25,7 +27,7 @@ def get_face_data():
         
         # Get the faceId of the image
         faceId = os.path.split(image_path)[1].split('user')[1]
-
+        
         # Detect the face in the image
         faces = faceCascade.detectMultiScale(image, 1.4)
 
