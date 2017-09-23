@@ -1,6 +1,9 @@
+import json
+import time
 import tkinter as tk
 
 import authenticate
+
 
 class App:
     def __init__(self, master):
@@ -26,10 +29,36 @@ class App:
         print("Tkinter is easy to use!")
 
     def authenticate_user(self):
-        print(authenticate.authenticate_face(recogniser))
+        print(authenticate.authenticate_face(face_recogniser))
 
-recognizer = cv2.face.LBPHFaceRecognizer_create()
-authenticate.do_training(recogniser)
+    def register_user(self):
+        highestUser = max(userDict)
+
+        newUser = highestUser + 1
+
+        # ask for input somehow (I CANNOT do this now)
+        newUserName = input('What would you like to be called? ')
+
+        userDict[newUser] = newUserName
+
+        for i in range(8): # 8 is arbitrary, this is up for change
+            # say some tkinter thing about getting ready (and maybe a countdown) and looking SLIGHTLY different each time
+
+            authenticate.take_registration_photo(newUser) # take and save the picture
+
+            time.sleep(1) # wait a bit
+
+        with open('user_data.json', 'w') as userFile: # update the json file
+            json.dump(userDict, userFile)
+        
+        authenticate.do_training(face_recognizer) # retrain
+
+with open('user_data.json', 'r') as userFile:
+    userDict = json.load(userFile)
+    userDict = {int(key):val for key,val in userDict.items()}
+
+face_recognizer = cv2.face.LBPHFaceRecognizer_create() # create the recogniser
+authenticate.do_training(face_recogniser) # train it
 
 root = tk.Tk()
 
