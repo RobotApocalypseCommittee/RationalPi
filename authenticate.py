@@ -58,30 +58,7 @@ def take_login_photo(): # takes a photo and formats it for the login attempt
 
     return np.dot(image[...,:3], [0.299, 0.587, 0.114]) # returns the grayscale version
 
-def authenticate_face(recogniser): # returns the (predicted) user id from a face (0 means unidentified)
-    grayImageArray = take_login_photo() # takes the photo
-
-    faceList = faceCascade.detectMultiScale(grayImageArray, 1.4) # finds the faces
-
-    id_list_confs = {} # starts the id dict (id:confidence)
-
-    for (x, y, w, h) in faces: # for every face
-        id_predicted, conf = recognizer.predict(grayImageArray[y: y + h, x: x + w]) # get the predidcted id and its confidence
-            
-        cv2.imshow("Analysing face...", predict_image[y: y + h, x: x + w]) # look nice
-        cv2.waitKey(20) # wait for a bit
-
-        if conf > 50: # if unconfident, put the confidence into the 0 key of the dict
-            id_list[0] = conf
-        else: # else put the conficence in that user's id key in the dict (i.e. for person with id 5 and a face of confidence 15, it would look like 5:15)
-            id_list[id_predicted] = conf
-
-    if len(faces): # if there were any faces, return the id of the prediction with the lowest confidence (low confidence means it is very confident)
-        return min(d, key=d.get)
-    else: # otherwise, return 0 (no faces, unidentified)
-        return 0
-
-def take_registration_photo(userId): # takes and saves ONE of a user's registration photos
+def save_new_image(userId, faceImage):
     # Gets the highest version number of the user's photo
     try:
         highestVersion = max(
@@ -94,6 +71,39 @@ def take_registration_photo(userId): # takes and saves ONE of a user's registrat
     except ValueError: # if this is the first photo then make -1 the lowest photo (so 1.0 is the first)
         highestVersion = -1
 
+    Image.fromarray(faceImage).save('Face Storage\\{}.{}.jpg'.format(userId, highestVersion+1))
+
+def authenticate_face(recogniser): # returns the (predicted) user id from a face (0 means unidentified)
+    grayImageArray = take_login_photo() # takes the photo
+
+    faceList = faceCascade.detectMultiScale(grayImageArray, 1.4) # finds the faces
+
+    id_list_confs = {} # starts the id dict (id:confidence)
+    photo_dict = {} # starts tho photo dict (id:photo array)
+
+    for (x, y, w, h) in faces: # for every face
+        id_predicted, conf = recognizer.predict(grayImageArray[y: y + h, x: x + w]) # get the predidcted id and its confidence
+            
+        cv2.imshow("Analysing face...", predict_image[y: y + h, x: x + w]) # look nice
+        cv2.waitKey(20) # wait for a bit
+
+        if conf > 50: # if unconfident, put the confidence into the 0 key of the dict
+            id_list_confs[0] = conf
+        else: # else put the conficence in that user's id key in the dict (i.e. for person with id 5 and a face of confidence 15, it would look like 5:15)
+            id_list_confs[id_predicted] = conf
+            photo_dict[id_predicted] = grayImageArray[y: y + h, x: x + w]
+
+    if len(faces): # if there were any faces, return the id of the prediction with the lowest confidence (low confidence means it is very confident)
+        winningKey = min(id_list_confs, key=id_list_confs.get)
+
+        if id_list_confs[winningKey] < 20:
+            save_new_image(winningKey, photo_dict[winningKey])
+        
+        return winningKey
+    else: # otherwise, return 0 (no faces, unidentified)
+        return 0
+
+def take_registration_photo(userId): # takes and saves ONE of a user's registration photos
     camera = PiCamera() # see line 50 onwards
     rawCapture = PiRGBArray(camera)
 
@@ -106,12 +116,8 @@ def take_registration_photo(userId): # takes and saves ONE of a user's registrat
 
     faces = faceCascade.detectMultiScale(grayImage, 1.4) # gets the faces for this image
 
-    totalFaces = 1 # makes a variable to allow for having no conflicting filenames
-
     # If face is detected, save that specific face
     for (x, y, w, h) in faces:
         croppedImage = grayImage[y: y + h, x: x + w] # crops it to be only the face
 
-        Image.fromarray(croppedImage).save('Face Storage\\{}.{}.jpg'.format(userId, highestVersion+totalFaces)) # saves the image with the user id and a unique number
-
-        totalFaces += 1 # makes sure that they have different names
+        save_new_image(userId, croppedImage)
