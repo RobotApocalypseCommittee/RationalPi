@@ -27,10 +27,8 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
     
     for image_path in image_paths:
         # get the image and grayscale it (to make the numpy array work nicely)
-        image_pil = Image.open(image_path).convert('L')
-        
-        # make the image a numpy array
-        image = np.array(image_pil, 'uint8')
+        colorImage = cv2.imread(image_path)
+        image = cv2.cvtColor(colorImage, cv2.COLOR_BGR2GRAY) # Definitely needed (for some reason)
         
         # Get the faceId of the image
         faceId = os.path.split(image_path)[1].split('.')[0]
@@ -56,7 +54,7 @@ def take_login_photo(): # takes a photo and formats it for the login attempt
     camera.capture(rawCapture, format="bgr") # captures the photo
     image = rawCapture.array() # turns it straight into a nice array
 
-    return np.dot(image[...,:3], [0.299, 0.587, 0.114]) # returns the grayscale version
+    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # returns the grayscale version
 
 def save_new_image(userId, faceImage):
     # Gets the highest version number of the user's photo
@@ -112,7 +110,7 @@ def take_registration_photo(userId): # takes and saves ONE of a user's registrat
     camera.capture(rawCapture, format="bgr")
     image = rawCapture.array()
 
-    grayImage = np.dot(image[...,:3], [0.299, 0.587, 0.114])
+    grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     faces = faceCascade.detectMultiScale(grayImage, 1.4) # gets the faces for this image
 
