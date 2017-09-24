@@ -96,7 +96,7 @@ def authenticate_face(recogniser): # returns the (predicted) user id from a face
     if len(faces): # if there were any faces, return the id of the prediction with the lowest confidence (low confidence means it is very confident)
         winningKey = min(id_list_confs, key=id_list_confs.get)
 
-        if id_list_confs[winningKey] < 20:
+        if id_list_confs[winningKey] < 15:
             save_new_image(winningKey, photo_dict[winningKey])
         
         return winningKey
