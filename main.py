@@ -3,7 +3,10 @@ import time
 import tkinter as tk
 
 import authenticate
+import register
+import tools
 
+FINGERPRINT_CONF = 15
 
 class App:
     def __init__(self, master):
@@ -29,7 +32,10 @@ class App:
         print("Tkinter is easy to use!")
 
     def authenticate_user(self):
-        print(authenticate.authenticate_face(face_recogniser))
+        user, conf = authenticate.authenticate_face(face_recogniser)
+
+        if conf > FINGERPRINT_CONF:
+            authenticate.
 
     def register_user(self):
         highestUser = max(userDict)
@@ -44,7 +50,7 @@ class App:
         for i in range(8): # 8 is arbitrary, this is up for change
             # say some tkinter thing about getting ready (and maybe a countdown) and looking SLIGHTLY different each time
 
-            authenticate.take_registration_photo(newUser) # take and save the picture
+            register.take_registration_photo(newUser) # take and save the picture
 
             time.sleep(1) # wait a bit
 
@@ -58,7 +64,7 @@ with open('user_data.json', 'r') as userFile:
     userDict = {int(key):val for key,val in userDict.items()}
 
 face_recognizer = cv2.face.LBPHFaceRecognizer_create() # create the recogniser
-authenticate.do_training(face_recogniser) # train it
+tools.do_training(face_recogniser) # train it
 
 root = tk.Tk()
 
