@@ -37,7 +37,7 @@ FPS.BAUD = 115200
 FPS.DEVICE_NAME = DEVICE_WINDOWS
 
 if __name__ == '__main__':
-    fps =  FPS.FPS_GT511C3(device_name=DEVICE_WINDOWS,baud=115200,timeout=2,is_com=False)
+    fps =  FPS.FPS_GT511C1R(device_name=DEVICE_WINDOWS,baud=115200,timeout=2,is_com=False)
     fps.UseSerialDebug = True
     fps.SetLED(True) # Turns ON the CMOS LED
     FPS.delay(1) # wait 1 second

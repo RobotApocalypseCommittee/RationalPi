@@ -10,7 +10,12 @@ from picamera import PiCamera
 from picamera.array import PiRGBArray
 from PIL import Image
 
+from fps import
+
 SAVE_IMAGE_CONF = 15
+DEVICE_LINUX = '/dev/cu.usbserial-A601EQ14'
+
+fps.DEVICE_NAME = DEVICE_WINDOWS
 
 # sets path to the xml cascade which finds hwere the faces actually are
 cascadePath = "haarcascade_frontalface_default.xml"
@@ -57,3 +62,6 @@ def authenticate_face(recogniser): # returns the (predicted) user id from a face
         return winningKey, id_list_confs[winningKey]
     else: # otherwise, return 0 (no faces, unidentified)
         return 0
+
+def authenticate_fingerprint(userId):
+    fingerprintSensor = fps.FPS_GT511C1R(device_name=DEVICE_LINUX,baud=115200,timeout=2,is_com=False)

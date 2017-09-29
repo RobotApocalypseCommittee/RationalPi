@@ -250,12 +250,12 @@ class Response_Packet(Packet):
 
 
     def IntFromParameter(self):
-        retval = 0;
-        retval = (retval << 8) + self.ParameterBytes[3];
-        retval = (retval << 8) + self.ParameterBytes[2];
-        retval = (retval << 8) + self.ParameterBytes[1];
-        retval = (retval << 8) + self.ParameterBytes[0];
-        return retval;
+        retval = 0
+        retval = (retval << 8) + self.ParameterBytes[3]
+        retval = (retval << 8) + self.ParameterBytes[2]
+        retval = (retval << 8) + self.ParameterBytes[1]
+        retval = (retval << 8) + self.ParameterBytes[0]
+        return retval
 
 
 class SerialCommander:
@@ -288,14 +288,14 @@ def connect(device_name=None,baud=None,timeout=None,is_com=True):
             if not _ser.isOpen():
                 _ser.open()
         except Exception as e:
-            print('[Connect] No es posible conectar al dispositivo %s' % (str(e)))
+            print('[Connect] It was not possible to connect to the device %s' % (str(e)))
             pass
     return _ser
 
 #BAUD = 115200
 BAUD = 9600
 
-class FPS_GT511C3(SerialCommander):
+class FPS_GT511C1R(SerialCommander):
     _serial = None
     _lastResponse = None
     _device_name = None
@@ -319,7 +319,7 @@ class FPS_GT511C3(SerialCommander):
             delay(0.1)
             self.Open()
         elif self.UseSerialDebug:
-            print('[FPS_GT511C3] No es posible conectar con el dispositivo %s' % self._device_name)
+            print('[FPS_GT511C1R] It was not possible to connect to the device %s' % self._device_name)
 
 
     def Open(self):
@@ -343,10 +343,10 @@ class FPS_GT511C3(SerialCommander):
              I implemented open, so had to do closed too... lol
         '''
         cp = Command_Packet('Close',UseSerialDebug=self.UseSerialDebug)
-        cp.Parameter[0] = 0x00;
-        cp.Parameter[1] = 0x00;
-        cp.Parameter[2] = 0x00;
-        cp.Parameter[3] = 0x00;
+        cp.Parameter[0] = 0x00
+        cp.Parameter[1] = 0x00
+        cp.Parameter[2] = 0x00
+        cp.Parameter[3] = 0x00
         packetbytes = cp.GetPacketBytes()
         self.SendCommand(packetbytes, 12)
         rp = self.GetResponse()
@@ -363,10 +363,10 @@ class FPS_GT511C3(SerialCommander):
              Returns: True if successful, false if not
         '''
         cp = Command_Packet('CmosLed',UseSerialDebug=self.UseSerialDebug)
-        cp.Parameter[0] = 0x01 if on else 0x00;
-        cp.Parameter[1] = 0x00;
-        cp.Parameter[2] = 0x00;
-        cp.Parameter[3] = 0x00;
+        cp.Parameter[0] = 0x01 if on else 0x00
+        cp.Parameter[1] = 0x00
+        cp.Parameter[2] = 0x00
+        cp.Parameter[3] = 0x00
         packetbytes = cp.GetPacketBytes()
         self.SendCommand(packetbytes, 12)
         rp = self.GetResponse()
@@ -761,7 +761,7 @@ class FPS_GT511C3(SerialCommander):
                 print(repr(bytes(cmd))[1:-1])
         else:
             if self.UseSerialDebug:
-                print('[SendCommand] No es posible escribir en %s' % self._device_name)
+                print('[SendCommand] Writing was not possible %s' % self._device_name)
 
     def GetResponse(self):
         '''
@@ -771,7 +771,7 @@ class FPS_GT511C3(SerialCommander):
         delay(interval)
         if self._serial is None:
             rp = Response_Packet()
-            print('[GetResponse] No es posible leer desde: %s' % self._device_name)
+            print('[GetResponse] Could not be read from: %s' % self._device_name)
         else:
             r = bytearray(self._serial.read(self._serial.inWaiting()))
             rp = Response_Packet(r,self.UseSerialDebug)

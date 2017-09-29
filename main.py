@@ -35,7 +35,7 @@ class App:
         user, conf = authenticate.authenticate_face(face_recogniser)
 
         if conf > FINGERPRINT_CONF:
-            authenticate.
+            result = authenticate.authenticate_fingerprint(user)
 
     def register_user(self):
         highestUser = max(userDict)
