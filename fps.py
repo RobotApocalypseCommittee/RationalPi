@@ -12,7 +12,6 @@ import binascii
 MAX_FINGER=20
 
 DEVICE_NAME = '/dev/ttyUSB0'  #default device to use
-
 if os.name == 'nt':
     DEVICE_NAME = 'COM3'
 
