@@ -1,23 +1,21 @@
 '''All the functions for validating users.'''
 
 # imports!
-import os
 import time
 
 import cv2
-import numpy as np
+
+import tools
+from fps import FPS_GT511C1R
 from picamera import PiCamera
 from picamera.array import PiRGBArray
-from PIL import Image
-
-from fps import FPS_GT511C1R
 
 DEVICE_NAME = '/dev/ttyUSB0'
 SAVE_IMAGE_CONF = 15
 
 # sets path to the xml cascade which finds hwere the faces actually are
-cascadePath = "haarcascade_frontalface_default.xml"
-faceCascade = cv2.CascadeClassifier(cascadePath)
+CASCADE_PATH = "haarcascade_frontalface_default.xml"
+FACE_CASCADE = cv2.CascadeClassifier(CASCADE_PATH)
 
 def take_login_photo(): # takes a photo and formats it for the login attempt
     # inits the camera and makes a RGB array reference to it (to be more efficient not having to convert between jpeg and arrays)
@@ -34,15 +32,15 @@ def take_login_photo(): # takes a photo and formats it for the login attempt
 def authenticate_face(recogniser): # returns the (predicted) user id from a face (0 means unidentified)
     grayImageArray = take_login_photo() # takes the photo
 
-    faceList = faceCascade.detectMultiScale(grayImageArray, 1.4) # finds the faces
+    faceList = FACE_CASCADE.detectMultiScale(grayImageArray, 1.4) # finds the faces
 
     id_list_confs = {} # starts the id dict (id:confidence)
-    photo_dict = {} # starts tho photo dict (id:photo array)
+    photo_dict = {} # starts the photo dict (id:photo array)
 
-    for (x, y, w, h) in faces: # for every face
-        id_predicted, conf = recognizer.predict(grayImageArray[y: y + h, x: x + w]) # get the predidcted id and its confidence
+    for (x, y, w, h) in faceList: # for every face
+        id_predicted, conf = recogniser.predict(grayImageArray[y: y + h, x: x + w]) # get the predidcted id and its confidence
             
-        cv2.imshow("Analysing face...", predict_image[y: y + h, x: x + w]) # look nice
+        cv2.imshow("Analysing face...", grayImageArray[y: y + h, x: x + w]) # look nice
         cv2.waitKey(20) # wait for a bit
 
         if conf > 50: # if unconfident, put the confidence into the 0 key of the dict
@@ -51,15 +49,17 @@ def authenticate_face(recogniser): # returns the (predicted) user id from a face
             id_list_confs[id_predicted] = conf
             photo_dict[id_predicted] = grayImageArray[y: y + h, x: x + w]
 
-    if len(faces): # if there were any faces, return the id of the prediction with the lowest confidence (low confidence means it is very confident)
+    if faceList: # if there were any faces, return the id of the prediction with the lowest confidence (low confidence means it is very confident)
         winningKey = min(id_list_confs, key=id_list_confs.get)
 
         if id_list_confs[winningKey] < SAVE_IMAGE_CONF:
-            save_new_image(winningKey, photo_dict[winningKey])
+            tools.save_new_image(winningKey, photo_dict[winningKey])
         
         return winningKey, id_list_confs[winningKey]
     else: # otherwise, return 0 (no faces, unidentified)
         return 0
 
 def authenticate_fingerprint(userId):
-    fingerprintSensor = FPS_GT511C1R(device_name=DEVICE_NAME,baud=115200,timeout=2,is_com=False)
+    fingerprintSensor = FPS_GT511C1R(device_name=DEVICE_NAME, baud=115200, timeout=2, is_com=False)
+
+    return 1

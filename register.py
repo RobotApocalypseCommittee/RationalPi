@@ -1,11 +1,10 @@
 import time
 
-import authenticate
 import cv2
-from picamera import PiCamera
-from picamera.array import PiRGBArray
 
 import tools
+from picamera import PiCamera
+from picamera.array import PiRGBArray
 
 cascadePath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascadePath)

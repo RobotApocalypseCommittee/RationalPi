@@ -6,20 +6,20 @@ from PIL import Image
 
 
 def get_face_data(): # gets faces in the Face Storage folder and returns the faces and their ids
-    images = [] 
-    labels = []
+    faceImages = []
+    faceIdList = []
 
     # gets all of the paths for the images
     image_paths = [
         'Face Storage\\' + incomplete_image_path # adds the folder name to the path (to make the path work within the python file)
         for incomplete_image_path in os.listdir('Face Storage') # for every photo in the Face Storage folder, get its name
         ]
-    
+
     for image_path in image_paths:
         # get the image and grayscale it (to make the numpy array work nicely)
         colorImage = cv2.imread(image_path)
         image = cv2.cvtColor(colorImage, cv2.COLOR_BGR2GRAY) # Definitely needed (for some reason)
-        
+
         # Get the faceId of the image
         faceId = os.path.split(image_path)[1].split('.')[0]
 
@@ -32,7 +32,7 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
 def do_training(recogniser): # trains the recogniser (done at startup, after a registration and every few mins)
     faceImages, faceIdList = get_face_data() # gets the data
 
-    recognizer.train(faceImages, np.array(faceIdList)) # does the training
+    recogniser.train(faceImages, np.array(faceIdList)) # does the training
 
 def save_new_image(userId, faceImage):
     # Gets the highest version number of the user's photo

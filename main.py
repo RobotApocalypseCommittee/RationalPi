@@ -2,6 +2,8 @@ import json
 import time
 import tkinter as tk
 
+import cv2
+
 import authenticate
 import register
 import tools
@@ -13,31 +15,34 @@ class App:
         frame = tk.Frame(master)
         frame.pack()
 
-        self.button = tk.Button(frame, 
-                             text="QUIT", fg="red",
-                             command=quit)
+        self.button = tk.Button(frame,
+                                text="QUIT", fg="red",
+                                command=quit)
         self.button.pack(side=tk.LEFT)
 
         self.slogan = tk.Button(frame,
-                             text="Hello",
-                             command=self.write_slogan)
+                                text="Hello",
+                                command=self.write_slogan)
         self.slogan.pack(side=tk.LEFT)
 
         self.auth = tk.Button(frame,
-                            text='Authenticate',
-                            command=self.authenticate_user)
+                              text='Authenticate',
+                              command=self.authenticate_user)
         self.auth.pack(side=tk.BOTTOM)
-    
-    def write_slogan(self):
+
+    @staticmethod
+    def write_slogan():
         print("Tkinter is easy to use!")
 
-    def authenticate_user(self):
-        user, conf = authenticate.authenticate_face(face_recogniser)
+    @staticmethod
+    def authenticate_user():
+        user, conf = authenticate.authenticate_face(FACE_RECOGNISER)
 
         if conf > FINGERPRINT_CONF:
             result = authenticate.authenticate_fingerprint(user)
 
-    def register_user(self):
+    @staticmethod
+    def register_user():
         highestUser = max(userDict)
 
         newUser = highestUser + 1
@@ -56,21 +61,21 @@ class App:
 
         with open('user_data.json', 'w') as userFile: # update the json file
             json.dump(userDict, userFile)
-        
-        authenticate.do_training(face_recognizer) # retrain
+
+        tools.do_training(FACE_RECOGNISER) # retrain
 
 with open('user_data.json', 'r') as userFile:
     userDict = json.load(userFile)
-    userDict = {int(key):val for key,val in userDict.items()}
+    userDict = {int(key):val for key, val in userDict.items()}
 
-face_recognizer = cv2.face.LBPHFaceRecognizer_create() # create the recogniser
-tools.do_training(face_recogniser) # train it
+FACE_RECOGNISER = cv2.face.LBPHFacerecognizer_create() # create the recogniser
+tools.do_training(FACE_RECOGNISER) # train it
 
 root = tk.Tk()
 
 root.overrideredirect(True)
 root.overrideredirect(False)
-root.attributes('-fullscreen',True)
+root.attributes('-fullscreen', True)
 app = App(root)
 
 
