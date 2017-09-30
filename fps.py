@@ -293,6 +293,9 @@ def connect(device_name=None, baud=None, timeout=None, is_com=True):
                 _ser.open()
         except Exception as e:
             print('[Connect] It was not possible to connect to the device %s' % (str(e)))
+    else:
+        print('[Connect] It was not possible to connect to the device (Device not found at {})'.format(device_name))
+
     return _ser
 
 #BAUD = 115200
