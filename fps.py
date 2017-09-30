@@ -10,7 +10,9 @@ from serial.tools import list_ports
 import time
 import binascii
 MAX_FINGER=20
-DEVICE_NAME = '/dev/cu.usbserial-A601EQ14'  #default device to use
+
+DEVICE_NAME = '/dev/ttyUSB0'  #default device to use
+
 if os.name == 'nt':
     DEVICE_NAME = 'COM3'
 
