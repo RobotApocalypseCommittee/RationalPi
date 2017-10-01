@@ -7,6 +7,7 @@ import cv2
 import authenticate
 import register
 import tools
+from picamera import PiCamera
 
 FINGERPRINT_CONF = 15
 
@@ -36,7 +37,7 @@ class App:
 
     @staticmethod
     def authenticate_user():
-        user, conf = authenticate.authenticate_face(FACE_RECOGNISER)
+        user, conf = authenticate.authenticate_face(FACE_RECOGNISER, CAMERA)
 
         if conf > FINGERPRINT_CONF:
             result = authenticate.authenticate_fingerprint(user)
@@ -55,7 +56,7 @@ class App:
         for i in range(8): # 8 is arbitrary, this is up for change
             # say some tkinter thing about getting ready (and maybe a countdown) and looking SLIGHTLY different each time
 
-            register.take_registration_photo(newUser) # take and save the picture
+            register.take_registration_photo(newUser, CAMERA) # take and save the picture
 
             time.sleep(1) # wait a bit
 
@@ -63,6 +64,9 @@ class App:
             json.dump(userDict, userFile)
 
         tools.do_training(FACE_RECOGNISER) # retrain
+
+CAMERA = PiCamera()
+time.sleep(2)
 
 with open('user_data.json', 'r') as userFile:
     userDict = json.load(userFile)

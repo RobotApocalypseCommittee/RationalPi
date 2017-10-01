@@ -7,7 +7,6 @@ import cv2
 
 import tools
 from fps import FPS_GT511C1R
-from picamera import PiCamera
 from picamera.array import PiRGBArray
 
 DEVICE_NAME = '/dev/ttyUSB0'
@@ -17,9 +16,8 @@ SAVE_IMAGE_CONF = 15
 CASCADE_PATH = "haarcascade_frontalface_default.xml"
 FACE_CASCADE = cv2.CascadeClassifier(CASCADE_PATH)
 
-def take_login_photo(): # takes a photo and formats it for the login attempt
-    # inits the camera and makes a RGB array reference to it (to be more efficient not having to convert between jpeg and arrays)
-    camera = PiCamera()
+def take_login_photo(camera): # takes a photo and formats it for the login attempt
+    # makes a RGB array reference to the camera (to be more efficient not having to convert between jpeg and arrays)
     rawCapture = PiRGBArray(camera)
 
     time.sleep(0.1) # gives time for the init
@@ -29,8 +27,8 @@ def take_login_photo(): # takes a photo and formats it for the login attempt
 
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # returns the grayscale version
 
-def authenticate_face(recogniser): # returns the (predicted) user id from a face (0 means unidentified)
-    grayImageArray = take_login_photo() # takes the photo
+def authenticate_face(recogniser, camera): # returns the (predicted) user id from a face (0 means unidentified)
+    grayImageArray = take_login_photo(camera) # takes the photo
 
     faceList = FACE_CASCADE.detectMultiScale(grayImageArray, 1.4) # finds the faces
 

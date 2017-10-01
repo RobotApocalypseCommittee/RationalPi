@@ -3,14 +3,13 @@ import time
 import cv2
 
 import tools
-from picamera import PiCamera
 from picamera.array import PiRGBArray
 
 cascadePath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascadePath)
 
-def take_registration_photo(userId): # takes and saves ONE of a user's registration photos
-    camera = PiCamera() # see line 50 onwards
+def take_registration_photo(userId, camera): # takes and saves ONE of a user's registration photos
+    # see line 50 onwards
     rawCapture = PiRGBArray(camera)
 
     time.sleep(0.1)
