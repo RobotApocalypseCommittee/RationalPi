@@ -23,7 +23,7 @@ def take_login_photo(camera): # takes a photo and formats it for the login attem
     time.sleep(0.1) # gives time for the init
 
     camera.capture(rawCapture, format="bgr") # captures the photo
-    image = rawCapture.array() # turns it straight into a nice array
+    image = rawCapture.array # turns it straight into a nice array
 
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # returns the grayscale version
 
