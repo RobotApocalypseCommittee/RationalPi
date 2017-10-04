@@ -72,7 +72,7 @@ with open('user_data.json', 'r') as userFile:
     userDict = json.load(userFile)
     userDict = {int(key):val for key, val in userDict.items()}
 
-FACE_RECOGNISER = cv2.face.LBPHFacerecognizer_create() # create the recogniser
+FACE_RECOGNISER = cv2.face.LBPHFaceRecognizer_create() # create the recogniser
 tools.do_training(FACE_RECOGNISER) # train it
 
 root = tk.Tk()
