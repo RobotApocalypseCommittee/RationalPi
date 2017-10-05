@@ -6,7 +6,7 @@ import time
 import numpy as np
 import cv2
 
-from settings import CAMERA, FACE_CASCADE, FACE_RECOGNISER, DEVICE_NAME, SAVE_IMAGE_CONF
+from settings import CONF_THRESHOLD, CAMERA, FACE_CASCADE, FACE_RECOGNISER, DEVICE_NAME, SAVE_IMAGE_CONF
 import tools
 from fps import FPS_GT511C1R
 from picamera.array import PiRGBArray
@@ -36,7 +36,7 @@ def authenticate_face(): # returns the (predicted) user id from a face (0 means 
         #cv2.imshow("Analysing face...", grayImageArray[y: y + h, x: x + w]) # look nice
         cv2.waitKey(20) # wait for a bit
 
-        if conf > 50: # if unconfident, put the confidence into the 0 key of the dict
+        if conf > CONF_THRESHOLD: # if unconfident, put the confidence into the 0 key of the dict
             id_list_confs[0] = conf
         else: # else put the conficence in that user's id key in the dict (i.e. for person with id 5 and a face of confidence 15, it would look like 5:15)
             id_list_confs[id_predicted] = conf
