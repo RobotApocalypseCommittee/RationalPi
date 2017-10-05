@@ -1,5 +1,7 @@
 from tkinter import *
 
+from .. import tkinter_funcs
+
 #locked screen class
 class LockedScreen(Frame):
     def __init__(self, root=None):
@@ -8,7 +10,7 @@ class LockedScreen(Frame):
 
         lockedBg = PhotoImage(file=FILEPATH+"lockedScreen.gif")
         lockedButton = PhotoImage(file=FILEPATH+"unlockTest.png")
-        
+
         self.width = 800
         self.height = 460
         self.grid()
