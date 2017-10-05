@@ -9,9 +9,9 @@ import tools
 def authenticate_user():
     user, conf = authenticate.authenticate_face()
 
-    if conf > FINGERPRINT_CONF:
-        if not authenticate.authenticate_fingerprint(user):
-            user = 0
+    #if conf > FINGERPRINT_CONF:
+        #if not authenticate.authenticate_fingerprint(user):
+            #user = 0
     
     return user, conf
 
