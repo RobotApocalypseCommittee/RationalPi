@@ -2,7 +2,8 @@ import time
 import tkinter as tk
 
 from settings import FACE_RECOGNISER
-import rational_gui
+import rational_gui.gui
+import rational_gui.lockedScreen
 import tools
 
 time.sleep(2) # allows time for the camera to set up for the first time
