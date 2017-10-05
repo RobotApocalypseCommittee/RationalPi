@@ -108,16 +108,20 @@ class HudScreen(Frame):
         crackers.grid(row=2, column=4, padx=20)
 
 # inits the photos
-lockedBg = PhotoImage(file=FILEPATH+"lockedScreen.gif")
-lockedButton = PhotoImage(file=FILEPATH+"unlockTest.png")
-placeholder = PhotoImage(file=FILEPATH+"placeholder.gif")
-verificationBg = PhotoImage(file=FILEPATH+"verificationScreen.gif")
-face_outline = PhotoImage(file=FILEPATH+"outline.gif")
-instructions = PhotoImage(file=FILEPATH+"instructions.png")
-take_photo = PhotoImage(file=FILEPATH+"camera.png")
-person_pic = PhotoImage(file=FILEPATH+"personpic.gif")
-cracker_pic = PhotoImage(file=FILEPATH+"cracker.gif")
-hudBg = PhotoImage(file=FILEPATH+"hudBg.png")
+def init_photos():
+    global lockedBg, lockedButton, facial_guidance, placeholder, verificationBg, face_outline, instructions, take_photo, person_pic, cracker_pic, hudBg
+    lockedBg = PhotoImage(file=FILEPATH+"lockedScreen.gif")
+    lockedButton = PhotoImage(file=FILEPATH+"unlockTest.png")
+    placeholder = PhotoImage(file=FILEPATH+"placeholder.gif")
+    verificationBg = PhotoImage(file=FILEPATH+"verificationScreen.gif")
+    face_outline = PhotoImage(file=FILEPATH+"outline.gif")
+    instructions = PhotoImage(file=FILEPATH+"instructions.png")
+    take_photo = PhotoImage(file=FILEPATH+"camera.png")
+    person_pic = PhotoImage(file=FILEPATH+"personpic.gif")
+    cracker_pic = PhotoImage(file=FILEPATH+"cracker.gif")
+    hudBg = PhotoImage(file=FILEPATH+"hudBg.png")
+
+init_photos()
 
 if __name__ == '__main__':
     root = Tk()
