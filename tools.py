@@ -12,8 +12,8 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
 
     # gets all of the paths for the images
     image_paths = [
-        'Face Storage\\' + incomplete_image_path # adds the folder name to the path (to make the path work within the python file)
-        for incomplete_image_path in os.listdir('Face Storage') # for every photo in the Face Storage folder, get its name
+        'Face Storage/' + incomplete_image_path # adds the folder name to the path (to make the path work within the python file)
+        for incomplete_image_path in os.listdir('Face Storage/') # for every photo in the Face Storage folder, get its name
         ]
 
     for image_path in image_paths:
@@ -25,7 +25,7 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
         faceId = os.path.split(image_path)[1].split('.')[0]
 
         faceImages.append(image)
-        faceIdList.append(faceId)
+        faceIdList.append(int(faceId))
 
     # return the images list and labels list
     return faceImages, faceIdList

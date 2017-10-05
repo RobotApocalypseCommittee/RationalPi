@@ -3,6 +3,7 @@
 # imports!
 import time
 
+import numpy as np
 import cv2
 
 from settings import CAMERA, FACE_CASCADE, FACE_RECOGNISER, DEVICE_NAME, SAVE_IMAGE_CONF
@@ -41,7 +42,7 @@ def authenticate_face(): # returns the (predicted) user id from a face (0 means 
             id_list_confs[id_predicted] = conf
             photo_dict[id_predicted] = grayImageArray[y: y + h, x: x + w]
 
-    if faceList: # if there were any faces, return the id of the prediction with the lowest confidence (low confidence means it is very confident)
+    if np.any(faceList): # if there were any faces, return the id of the prediction with the lowest confidence (low confidence means it is very confident)
         winningKey = min(id_list_confs, key=id_list_confs.get)
 
         if id_list_confs[winningKey] < SAVE_IMAGE_CONF:
@@ -49,7 +50,7 @@ def authenticate_face(): # returns the (predicted) user id from a face (0 means 
 
         return winningKey, id_list_confs[winningKey]
     else: # otherwise, return 0 (no faces, unidentified)
-        return 0
+        return 0, 1000
 
 def authenticate_fingerprint(userId):
     fingerprintSensor = FPS_GT511C1R(device_name=DEVICE_NAME, baud=115200, timeout=2, is_com=False)

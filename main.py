@@ -16,6 +16,6 @@ root.resizable(width=False, height=False)
 root.geometry('{}x{}'.format(800, 460))
 root.configure(background='white')
 
-window = gui.HudScreen(root)
+window = gui.LockedScreen(root)
 
 root.mainloop()

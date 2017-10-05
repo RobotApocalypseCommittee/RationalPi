@@ -13,7 +13,7 @@ def authenticate_user():
         if not authenticate.authenticate_fingerprint(user):
             user = 0
     
-    return user
+    return user, conf
 
 def register_user():
     highestUser = max(USER_DICT)
@@ -38,6 +38,6 @@ def register_user():
     tools.update() # retrain
 
 def login_button_func():
-    user = authenticate_user()
+    user, conf = authenticate_user()
 
-    print(user)
+    print(user, ' ', conf)
