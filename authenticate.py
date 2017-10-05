@@ -33,7 +33,7 @@ def authenticate_face(): # returns the (predicted) user id from a face (0 means 
     for (x, y, w, h) in faceList: # for every face
         id_predicted, conf = FACE_RECOGNISER.predict(grayImageArray[y: y + h, x: x + w]) # get the predidcted id and its confidence
 
-        cv2.imshow("Analysing face...", grayImageArray[y: y + h, x: x + w]) # look nice
+        #cv2.imshow("Analysing face...", grayImageArray[y: y + h, x: x + w]) # look nice
         cv2.waitKey(20) # wait for a bit
 
         if conf > 50: # if unconfident, put the confidence into the 0 key of the dict
