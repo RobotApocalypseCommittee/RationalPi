@@ -24,7 +24,7 @@ class LockedScreen(Frame):
         bg_lbl.place(x=0, y=0)
 
         #submit button things
-        submit_button = Button(root, image=lockedButton, command=test, bg="black", activebackground="black", bd=0)
+        submit_button = Button(root, image=lockedButton, command=tkinter_funcs.login_button_func, bg="black", activebackground="black", bd=0)
         submit_button.grid(row=1, column=1, padx=322, pady=142)
         
         print("Locked Screen Initialised")
