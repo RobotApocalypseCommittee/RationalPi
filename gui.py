@@ -1,11 +1,6 @@
 from tkinter import *
 
-
-#Sets up tkinter window things
-root = Tk()
-root.resizable(width=False, height=False)
-root.geometry('{}x{}'.format(800, 460))
-root.configure(background='white')
+import tkinter_funcs
 
 FILEPATH = "images/"
 
@@ -13,22 +8,8 @@ FILEPATH = "images/"
 def test():
     print("BOI PRESSED")
 
-#Initializes all the photos needed for the gui
-def initializePhotos():
-    global lockedBg, lockedButton, facial_guidance, placeholder, verificationBg, face_outline, instructions, take_photo, person_pic, cracker_pic, hudBg
-    lockedBg = PhotoImage(file=FILEPATH+"lockedScreen.gif")
-    lockedButton = PhotoImage(file=FILEPATH+"unlockTest.png")
-    placeholder = PhotoImage(file=FILEPATH+"placeholder.gif")
-    verificationBg = PhotoImage(file=FILEPATH+"verificationScreen.gif")
-    face_outline = PhotoImage(file=FILEPATH+"outline.gif")
-    instructions = PhotoImage(file=FILEPATH+"instructions.png")
-    take_photo = PhotoImage(file=FILEPATH+"camera.png")
-    person_pic = PhotoImage(file=FILEPATH+"personpic.gif")
-    cracker_pic = PhotoImage(file=FILEPATH+"cracker.gif")
-    hudBg = PhotoImage(file=FILEPATH+"hudBg.png")
-
 #locked screen class
-class lockedScreen(Frame):
+class LockedScreen(Frame):
     def __init__(self, root=None):
         #setup things
         frame = Frame.__init__(self, root)
@@ -49,7 +30,7 @@ class lockedScreen(Frame):
         print("Locked Screen Initialised")
 
 #verification class
-class verificationScreen(Frame):
+class VerificationScreen(Frame):
     def __init__(self, root=None):
         #basic setup things
         frame = Frame.__init__(self, root)
@@ -84,7 +65,7 @@ class verificationScreen(Frame):
 
 
 #hud class
-class hudScreen(Frame):
+class HudScreen(Frame):
     def __init__(self, root=None):
         #setup
         frame = Frame.__init__(self, root)
@@ -110,15 +91,15 @@ class hudScreen(Frame):
         info.grid(row=2, column=2, padx=10)
 
         #lock button stuff
-        lock_button = Button(text="Lock", bg="black", activebackground = "black", fg="white")
+        lock_button = Button(text="Lock", bg="black", activebackground="black", fg="white")
         lock_button.grid(row=1, column=5, padx=170, pady=15)
 
         #dispense button stuff
-        dispense_button = Button(text="Dispense", bg="black", activebackground = "black", fg="white")
+        dispense_button = Button(text="Dispense", bg="black", activebackground="black", fg="white")
         dispense_button.grid(row=3, column=2, padx=20, pady=20)
 
         #refill button things
-        refill_button = Button(text="Refill", bg="black", activebackground = "black", fg="white")
+        refill_button = Button(text="Refill", bg="black", activebackground="black", fg="white")
         refill_button.grid(row=3, column=3, padx=20, pady=20)
 
         #crackers image things
@@ -126,14 +107,29 @@ class hudScreen(Frame):
         crackers.image = cracker_pic
         crackers.grid(row=2, column=4, padx=20)
 
+# inits the photos
+lockedBg = PhotoImage(file=FILEPATH+"lockedScreen.gif")
+lockedButton = PhotoImage(file=FILEPATH+"unlockTest.png")
+placeholder = PhotoImage(file=FILEPATH+"placeholder.gif")
+verificationBg = PhotoImage(file=FILEPATH+"verificationScreen.gif")
+face_outline = PhotoImage(file=FILEPATH+"outline.gif")
+instructions = PhotoImage(file=FILEPATH+"instructions.png")
+take_photo = PhotoImage(file=FILEPATH+"camera.png")
+person_pic = PhotoImage(file=FILEPATH+"personpic.gif")
+cracker_pic = PhotoImage(file=FILEPATH+"cracker.gif")
+hudBg = PhotoImage(file=FILEPATH+"hudBg.png")
 
-initializePhotos()
+if __name__ == '__main__':
+    root = Tk()
+    root.resizable(width=False, height=False)
+    root.geometry('{}x{}'.format(800, 460))
+    root.configure(background='white')
+    
+    #locked = LockedScreen(root)
+    #verify = VerificationScreen(root)
+    hud = HudScreen(root)
 
-#locked = lockedScreen(root)
-#verify = verificationScreen(root)
-hud = hudScreen(root)
 
 
 
-
-mainloop()
+    mainloop()

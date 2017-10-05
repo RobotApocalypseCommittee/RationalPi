@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 from PIL import Image
 
+from settings import FACE_RECOGNISER
 
 def get_face_data(): # gets faces in the Face Storage folder and returns the faces and their ids
     faceImages = []
@@ -29,10 +30,13 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
     # return the images list and labels list
     return faceImages, faceIdList
 
-def do_training(recogniser): # trains the recogniser (done at startup, after a registration and every few mins)
+def do_training(): # trains the recogniser (done at startup)
     faceImages, faceIdList = get_face_data() # gets the data
 
-    recogniser.train(faceImages, np.array(faceIdList)) # does the training
+    FACE_RECOGNISER.train(faceImages, np.array(faceIdList)) # does the training
+
+def update(): # TODO
+    return
 
 def save_new_image(userId, faceImage):
     # Gets the highest version number of the user's photo

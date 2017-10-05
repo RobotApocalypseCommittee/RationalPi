@@ -5,30 +5,24 @@ import time
 
 import cv2
 
+from settings import CAMERA, FACE_CASCADE, FACE_RECOGNISER, DEVICE_NAME, SAVE_IMAGE_CONF
 import tools
 from fps import FPS_GT511C1R
 from picamera.array import PiRGBArray
 
-DEVICE_NAME = '/dev/ttyUSB0'
-SAVE_IMAGE_CONF = 15
-
-# sets path to the xml cascade which finds hwere the faces actually are
-CASCADE_PATH = "haarcascade_frontalface_default.xml"
-FACE_CASCADE = cv2.CascadeClassifier(CASCADE_PATH)
-
-def take_login_photo(camera): # takes a photo and formats it for the login attempt
+def take_login_photo(): # takes a photo and formats it for the login attempt
     # makes a RGB array reference to the camera (to be more efficient not having to convert between jpeg and arrays)
-    rawCapture = PiRGBArray(camera)
+    rawCapture = PiRGBArray(CAMERA)
 
     time.sleep(0.1) # gives time for the init
 
-    camera.capture(rawCapture, format="bgr") # captures the photo
+    CAMERA.capture(rawCapture, format="bgr") # captures the photo
     image = rawCapture.array # turns it straight into a nice array
 
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # returns the grayscale version
 
-def authenticate_face(recogniser, camera): # returns the (predicted) user id from a face (0 means unidentified)
-    grayImageArray = take_login_photo(camera) # takes the photo
+def authenticate_face(): # returns the (predicted) user id from a face (0 means unidentified)
+    grayImageArray = take_login_photo() # takes the photo
 
     faceList = FACE_CASCADE.detectMultiScale(grayImageArray, 1.4) # finds the faces
 
@@ -36,8 +30,8 @@ def authenticate_face(recogniser, camera): # returns the (predicted) user id fro
     photo_dict = {} # starts the photo dict (id:photo array)
 
     for (x, y, w, h) in faceList: # for every face
-        id_predicted, conf = recogniser.predict(grayImageArray[y: y + h, x: x + w]) # get the predidcted id and its confidence
-            
+        id_predicted, conf = FACE_RECOGNISER.predict(grayImageArray[y: y + h, x: x + w]) # get the predidcted id and its confidence
+
         cv2.imshow("Analysing face...", grayImageArray[y: y + h, x: x + w]) # look nice
         cv2.waitKey(20) # wait for a bit
 
@@ -52,7 +46,7 @@ def authenticate_face(recogniser, camera): # returns the (predicted) user id fro
 
         if id_list_confs[winningKey] < SAVE_IMAGE_CONF:
             tools.save_new_image(winningKey, photo_dict[winningKey])
-        
+
         return winningKey, id_list_confs[winningKey]
     else: # otherwise, return 0 (no faces, unidentified)
         return 0
