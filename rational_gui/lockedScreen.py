@@ -5,6 +5,10 @@ class LockedScreen(Frame):
     def __init__(self, root=None):
         #setup things
         frame = Frame.__init__(self, root)
+
+        lockedBg = PhotoImage(file=FILEPATH+"lockedScreen.gif")
+        lockedButton = PhotoImage(file=FILEPATH+"unlockTest.png")
+        
         self.width = 800
         self.height = 460
         self.grid()
