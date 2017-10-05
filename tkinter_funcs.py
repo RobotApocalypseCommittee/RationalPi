@@ -36,4 +36,8 @@ def register_user():
         json.dump(USER_DICT, userFile)
 
     tools.update() # retrain
-    
+
+def login_button_func():
+    user = authenticate_user()
+
+    print(user)
