@@ -1,5 +1,7 @@
 import json
+
 from picamera import PiCamera
+import cv2
 
 # inits camera
 CAMERA = PiCamera()
