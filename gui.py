@@ -121,10 +121,9 @@ def init_photos():
     cracker_pic = PhotoImage(file=FILEPATH+"cracker.gif")
     hudBg = PhotoImage(file=FILEPATH+"hudBg.png")
 
-init_photos()
-
 if __name__ == '__main__':
     root = Tk()
+    init_photos()
     root.resizable(width=False, height=False)
     root.geometry('{}x{}'.format(800, 460))
     root.configure(background='white')

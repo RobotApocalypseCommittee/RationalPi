@@ -11,6 +11,7 @@ tools.do_training() # train the recogniser
 
 # init the root window
 root = tk.Tk()
+gui.init_photos()
 root.resizable(width=False, height=False)
 root.geometry('{}x{}'.format(800, 460))
 root.configure(background='white')
