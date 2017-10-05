@@ -66,6 +66,7 @@ class App:
         tools.do_training(FACE_RECOGNISER) # retrain
 
 CAMERA = PiCamera()
+CAMERA.rotation = 180
 time.sleep(2)
 
 with open('user_data.json', 'r') as userFile:
