@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 from PIL import Image
 
-from settings import FACE_RECOGNISER
+from settings import FACE_RECOGNISER, FACE_CASCADE
 
 def get_face_data(): # gets faces in the Face Storage folder and returns the faces and their ids
     faceImages = []
@@ -23,9 +23,15 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
 
         # Get the faceId of the image
         faceId = os.path.split(image_path)[1].split('.')[0]
+        print(faceId)
 
-        faceImages.append(image)
-        faceIdList.append(int(faceId))
+        faceList = FACE_CASCADE.detectMultiScale(image, 1.4)
+
+        for (x, y, w, h) in faceList:
+            realImage = image[y: y + h, x: x + w]
+
+            faceImages.append(realImage)
+            faceIdList.append(int(faceId))
 
     # return the images list and labels list
     return faceImages, faceIdList

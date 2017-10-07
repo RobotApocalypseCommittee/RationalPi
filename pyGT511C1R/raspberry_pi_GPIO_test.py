@@ -26,31 +26,22 @@ This may be works fine, if don't, try to change the fingerprint baud rate with b
 
 
 '''
-from pyGT511C1R import FPS
+import FPS
 import sys
 
-DEVICE_GPIO = '/dev/ttyAMA0'
-DEVICE_LINUX = '/dev/cu.usbserial-A601EQ14'
-DEVICE_MAC = '/dev/cu.usbserial-A601EQ14'
-DEVICE_WINDOWS = 'COM3'
+DEVICE_GPIO = '/dev/serial0'
 FPS.BAUD = 115200
-FPS.DEVICE_NAME = DEVICE_WINDOWS
+FPS.DEVICE_NAME = DEVICE_GPIO
 
 if __name__ == '__main__':
-    fps =  FPS.FPS_GT511C1R(device_name=DEVICE_WINDOWS,baud=115200,timeout=2,is_com=False)
-    fps.UseSerialDebug = True
-    fps.SetLED(True) # Turns ON the CMOS LED
-    FPS.delay(1) # wait 1 second
-    print 'Put your finger in the scan'
-    counter = 0 # simple counter for wait 10 seconds
-    while counter < 10:
-        if fps.IsPressFinger():  #verify if the finger is in the scan
-            print 'Your finger is in the scan'
-            fps.SetLED(False) # Turns OFF the CMOS LED
-            break
-        else:
-            FPS.delay(1) #wait 1 second
-            counter = counter + 1
+    fps =  FPS.FPS_GT511C3(device_name=DEVICE_GPIO,baud=115200,timeout=2,is_com=False)
+    fps.UseSerialDebug = False
+    for i in range(5):
+        print("BLINK")
+        fps.SetLED(True) # Turns ON the CMOS LED
+        FPS.delay(1) # wait 1 second
+        fps.SetLED(False)
+        FPS.delay(1)
 
     fps.Close() # Closes serial connection
     pass
