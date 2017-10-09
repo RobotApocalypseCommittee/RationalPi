@@ -17,7 +17,7 @@ FACE_RECOGNISER = cv2.face.LBPHFaceRecognizer_create()
 
 FACE_CASCADE = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
-CONF_THRESHOLD = 100
+CONF_THRESHOLD = 1000
 
 SAVE_IMAGE_CONF = 15
 
