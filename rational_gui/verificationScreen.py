@@ -40,5 +40,5 @@ class VerificationScreen(Page):
         instructions_lbl.grid(row=1, column=3, padx=10, pady=0)
 
         #take photo image
-        take_photo_button = tk.Button(self, image=take_photo, command=test, bg="blue", activebackground="red", bd=0)
+        take_photo_button = tk.Button(self, image=take_photo, bg="blue", activebackground="red", bd=0)
         take_photo_button.place(x=330, y=320)

@@ -3,7 +3,6 @@ import tkinter as tk
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 
-from .. import tkinter_funcs
 
 
 #locked screen class
@@ -25,7 +24,7 @@ class LockedScreen(Page):
         bg_lbl.place(x=0, y=0)
 
         #submit button things
-        submit_button = tk.Button(self, image=lockedButton, command=tkinter_funcs.login_button_func, bg="black", activebackground="black", bd=0)
+        submit_button = tk.Button(self, image=lockedButton, bg="black", activebackground="black", bd=0)
         submit_button.grid(row=1, column=1, padx=322, pady=142)
         
         print("Locked Screen Initialised")
