@@ -24,7 +24,8 @@ class LockedScreen(Page):
         bg_lbl.place(x=0, y=0)
 
         #submit button things
-        submit_button = tk.Button(self, image=lockedButton, bg="black", activebackground="black", bd=0)
+        submit_button = tk.Button(self, image=lockedButton, command=lambda: print("noot"), bg="black", activebackground="black", bd=0)
+        submit_button.image = lockedButton
         submit_button.grid(row=1, column=1, padx=322, pady=142)
         
         print("Locked Screen Initialised")
