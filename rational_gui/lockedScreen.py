@@ -3,7 +3,7 @@ import tkinter as tk
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 
-
+import tkinter_funcs
 
 #locked screen class
 class LockedScreen(Page):
