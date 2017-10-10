@@ -3,6 +3,8 @@ import tkinter as tk
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 
+import tkinter_funcs
+
 
 #verification class
 class VerificationScreen(Page):
@@ -44,4 +46,9 @@ class VerificationScreen(Page):
         take_photo_button.place(x=330, y=320)
 
     def handle_authenticate(self):
-        print("AUTH")
+        user = tkinter_funcs.authenticate_user()
+
+        if not user:
+            self.controller.show_page("FingerprintScreen")
+        else:
+            self.controller.show_page("HudScreen", user)

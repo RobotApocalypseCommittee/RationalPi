@@ -5,6 +5,6 @@ class Page(tk.Frame):
         super().__init__(master=parent)
         self.controller = controller
 
-    def render(self, **kwargs):
+    def render(self, data=False):
         '''Receives render data through kwargs, and has to change values.'''
         pass

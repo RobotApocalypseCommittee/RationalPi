@@ -11,9 +11,9 @@ def authenticate_user():
 
     #if conf > FINGERPRINT_CONF:
         #if not authenticate.authenticate_fingerprint(user):
-            #user = 0
+            #user = False
     
-    return user, conf
+    return user
 
 def register_user():
     highestUser = max(USER_DICT)

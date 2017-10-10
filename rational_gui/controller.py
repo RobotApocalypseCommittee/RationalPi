@@ -22,8 +22,8 @@ class Controller(tk.Tk):
 
         self.pages = {}
 
-    def show_page(self, name):
-        self.pages[name].render()
+    def show_page(self, name, data=False):
+        self.pages[name].render(data)
         self.pages[name].tkraise()
 
     def add_page(self, page):
