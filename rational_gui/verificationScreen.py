@@ -17,7 +17,7 @@ class VerificationScreen(Page):
         face_outline = tk.PhotoImage(file=get_imagepath("outline"))
         placeholder = tk.PhotoImage(file=get_imagepath("placeholder"))
         instructions = tk.PhotoImage(file=get_imagepath("instructions"))
-        take_photo = tk.PhotoImage(file=get_imagepath("camera"))
+        self.take_photo_img = tk.PhotoImage(file=get_imagepath("camera"))
 
         #background things
         bg_lbl = tk.Label(self, image=verificationBg)
@@ -40,5 +40,8 @@ class VerificationScreen(Page):
         instructions_lbl.grid(row=1, column=3, padx=10, pady=0)
 
         #take photo image
-        take_photo_button = tk.Button(self, image=take_photo, bg="blue", activebackground="red", bd=0)
+        take_photo_button = tk.Button(self, command=self.handle_authenticate, image=self.take_photo_img, bg="blue", activebackground="red", bd=0)
         take_photo_button.place(x=330, y=320)
+
+    def handle_authenticate(self):
+        print("AUTH")
