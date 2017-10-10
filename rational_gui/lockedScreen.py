@@ -1,5 +1,6 @@
 import tkinter as tk
 
+from settings import CONTROLLER
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 
@@ -10,9 +11,9 @@ except ImportError:
 
 #locked screen class
 class LockedScreen(Page):
-    def __init__(self, parent, controller):
+    def __init__(self, parent):
         #setup things
-        super().__init__(parent, controller)
+        super().__init__(parent)
 
         lockedBg = tk.PhotoImage(file=get_imagepath("lockedScreen"))
         lockedButton = tk.PhotoImage(file=get_imagepath("unlockTest"))
@@ -27,7 +28,7 @@ class LockedScreen(Page):
         bg_lbl.place(x=0, y=0)
 
         #submit button things
-        submit_button = tk.Button(self, image=lockedButton, command=lambda: controller.show_page("VerificationScreen"), bg="black", activebackground="black", bd=0)
+        submit_button = tk.Button(self, image=lockedButton, command=lambda: CONTROLLER.show_page("VerificationScreen"), bg="black", activebackground="black", bd=0)
         submit_button.image = lockedButton
         submit_button.grid(row=1, column=1, padx=322, pady=142)
         

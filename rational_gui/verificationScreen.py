@@ -3,14 +3,16 @@ import tkinter as tk
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 
-import tkinter_funcs
-
+try:
+    import tkinter_funcs
+except ImportError:
+    pass
 
 #verification class
 class VerificationScreen(Page):
-    def __init__(self, parent, controller):
+    def __init__(self, parent):
         #basic setup things
-        super(VerificationScreen, self).__init__(parent, controller)
+        super(VerificationScreen, self).__init__(parent)
         self.width = 800
         self.height = 460
         self.grid()
@@ -42,13 +44,8 @@ class VerificationScreen(Page):
         instructions_lbl.grid(row=1, column=3, padx=10, pady=0)
 
         #take photo image
-        take_photo_button = tk.Button(self, command=self.handle_authenticate, image=self.take_photo_img, bg="blue", activebackground="red", bd=0)
+        try:
+            take_photo_button = tk.Button(self, command=tkinter_funcs.authenticate_user, image=self.take_photo_img, bg="blue", activebackground="red", bd=0)
+        except NameError:
+            take_photo_button = tk.Button(self, command=lambda: print('noot'), image=self.take_photo_img, bg="blue", activebackground="red", bd=0)
         take_photo_button.place(x=330, y=320)
-
-    def handle_authenticate(self):
-        user = tkinter_funcs.authenticate_user()
-
-        if not user:
-            self.controller.show_page("FingerprintScreen")
-        else:
-            self.controller.show_page("HudScreen", user)

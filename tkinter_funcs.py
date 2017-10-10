@@ -1,7 +1,7 @@
 import time
 import json
 
-from settings import FACE_RECOGNISER, FINGERPRINT_CONF, CAMERA, USER_DICT
+from settings import FACE_RECOGNISER, FINGERPRINT_CONF, CAMERA, USER_DICT, CONTROLLER
 import authenticate
 import register
 import tools
@@ -13,7 +13,7 @@ def authenticate_user():
         #if not authenticate.authenticate_fingerprint(user):
             #user = False
     
-    return user
+    return user, conf
 
 def register_user():
     highestUser = max(USER_DICT)
@@ -40,4 +40,7 @@ def register_user():
 def login_button_func():
     user, conf = authenticate_user()
 
-    print(user, ' ', conf)
+    if not user:
+        CONTROLLER.show_page("FingerprintScreen")
+    else:
+        CONTROLLER.show_page("HudScreen", user)

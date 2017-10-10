@@ -6,9 +6,9 @@ from rational_gui.page import Page
 
 #hud class
 class HudScreen(Page):
-    def __init__(self, parent, controller):
+    def __init__(self, parent):
         #setup things
-        super().__init__(parent, controller)
+        super().__init__(parent)
         self.width = 800
         self.height = 460
         self.grid()

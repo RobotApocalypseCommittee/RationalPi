@@ -27,6 +27,5 @@ class Controller(tk.Tk):
         self.pages[name].tkraise()
 
     def add_page(self, page):
-        self.pages[page.__name__] = page(
-            parent=self.container, controller=self)
+        self.pages[page.__name__] = page(parent=self.container)
         self.pages[page.__name__].grid(row=0, column=0, sticky="nsew")

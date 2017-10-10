@@ -7,8 +7,8 @@ from rational_gui.page import Page
 
 
 class FingerprintScreen(Page):
-    def __init__(self, parent, controller):
-        super(FingerprintScreen, self).__init__(parent, controller)
+    def __init__(self, parent):
+        super(FingerprintScreen, self).__init__(parent)
         self.width = 800
         self.height = 460
         self.grid()
