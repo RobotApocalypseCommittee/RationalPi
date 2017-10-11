@@ -50,7 +50,7 @@ def authenticate_face(): # returns the (predicted) user id from a face (0 means 
 
         return winningKey, id_list_confs[winningKey]
     else: # otherwise, return 0 (no faces, unidentified)
-        return 0, 1000
+        return False, 1000
 
 def authenticate_fingerprint(userId):
     fingerprintSensor = FPS_GT511C1R(device_name=DEVICE_NAME, baud=115200, timeout=2, is_com=False)
