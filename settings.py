@@ -3,15 +3,8 @@ import json
 from picamera import PiCamera
 import cv2
 
-from rational_gui import controller, verificationScreen, hudScreen, lockedScreen, fingerprintScreen
-
 # inits tkinter container
-CONTROLLER = controller.Controller()
-
-CONTROLLER.add_page(verificationScreen.VerificationScreen)
-CONTROLLER.add_page(hudScreen.HudScreen)
-CONTROLLER.add_page(lockedScreen.LockedScreen)
-CONTROLLER.add_page(fingerprintScreen.FingerprintScreen)
+CONTROLLER = None
 
 # inits camera
 CAMERA = PiCamera()
