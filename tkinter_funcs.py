@@ -1,7 +1,8 @@
 import time
 import json
 
-from settings import FACE_RECOGNISER, FINGERPRINT_CONF, CAMERA, USER_DICT, CONTROLLER
+from settings import FACE_RECOGNISER, FINGERPRINT_CONF, CAMERA, USER_DICT
+from rational_gui.controller import CONTROLLER
 import authenticate
 import register
 import tools

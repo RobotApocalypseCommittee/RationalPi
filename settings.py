@@ -6,8 +6,6 @@ except ImportError:
     pass
 import cv2
 
-# inits tkinter container
-CONTROLLER = None
 
 # inits camera
 try:
@@ -22,9 +20,12 @@ with open('user_data.json', 'r') as userFile:
     USER_DICT = {int(key):val for key, val in USER_DICT.items()}
 
 # inits misc stuff for authentication
-FACE_RECOGNISER = cv2.face.LBPHFaceRecognizer_create()
+try:
+    FACE_RECOGNISER = cv2.face.LBPHFaceRecognizer_create()
 
-FACE_CASCADE = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+    FACE_CASCADE = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+except (NameError, AttributeError):
+    print("Could not load CV2, Prepare for errors...")
 
 CONF_THRESHOLD = 1000
 

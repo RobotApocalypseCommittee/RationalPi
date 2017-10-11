@@ -1,6 +1,5 @@
 import tkinter as tk
 
-from settings import CONTROLLER
 
 class Page(tk.Frame):
     def __init__(self, parent):

@@ -1,3 +1,4 @@
+'''The gui controller'''
 import tkinter as tk
 import tkinter.font
 
@@ -29,3 +30,5 @@ class Controller(tk.Tk):
     def add_page(self, page):
         self.pages[page.__name__] = page(parent=self.container)
         self.pages[page.__name__].grid(row=0, column=0, sticky="nsew")
+
+CONTROLLER = Controller() # PLS IMPORT ME FOR LOLS
