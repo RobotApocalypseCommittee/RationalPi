@@ -1,14 +1,20 @@
 import json
 
-from picamera import PiCamera
+try:
+    from picamera import PiCamera
+except ImportError:
+    pass
 import cv2
 
 # inits tkinter container
 CONTROLLER = None
 
 # inits camera
-CAMERA = PiCamera()
-CAMERA.rotation = 180
+try:
+    CAMERA = PiCamera()
+    CAMERA.rotation = 180
+except NameError:
+    pass
 
 # gets the list of users
 with open('user_data.json', 'r') as userFile:

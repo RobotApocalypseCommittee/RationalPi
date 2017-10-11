@@ -6,6 +6,10 @@ import authenticate
 import register
 import tools
 
+# ////////////////////////////////// #
+# Functions for authenticating users #
+# ////////////////////////////////// #
+
 def authenticate_user():
     user, conf = authenticate.authenticate_face()
 
@@ -14,6 +18,18 @@ def authenticate_user():
             #user = False
     
     return user, conf
+
+def login_button_func():
+    user, conf = authenticate_user()
+
+    if not user:
+        CONTROLLER.show_page("FingerprintScreen")
+    else:
+        CONTROLLER.show_page("HudScreen", user)
+
+# /////////////////////////////// #
+# Functions for registering users #
+# /////////////////////////////// #
 
 def register_user():
     highestUser = max(USER_DICT)
@@ -36,11 +52,3 @@ def register_user():
         json.dump(USER_DICT, userFile)
 
     tools.update() # retrain
-
-def login_button_func():
-    user, conf = authenticate_user()
-
-    if not user:
-        CONTROLLER.show_page("FingerprintScreen")
-    else:
-        CONTROLLER.show_page("HudScreen", user)
