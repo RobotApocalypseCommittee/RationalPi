@@ -81,7 +81,9 @@ class FingerprintScanner:
                 return response
 
             else:
-                return response # TODO: Add error code strings...
+                self.print_error(self.errors[response.parameter])
+
+                return response
 
         else:
             self.print_error("Cannot write to serial, port closed.")
@@ -168,7 +170,7 @@ class FingerprintScanner:
 
     @staticmethod
     def print_error(error):
-        raise FingerprintException(error)
+        print(error)
 
     def close(self):
         self._ser.close()
