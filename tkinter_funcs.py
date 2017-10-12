@@ -1,7 +1,7 @@
 import time
 import json
 
-from settings import FACE_RECOGNISER, FINGERPRINT_CONF, CAMERA, USER_DICT
+from settings import FINGERPRINT_CONF, USER_DICT, FINGERPRINT_SENSOR
 from rational_gui.controller import CONTROLLER
 import authenticate
 import register
@@ -11,22 +11,22 @@ import tools
 # Functions for authenticating users #
 # ////////////////////////////////// #
 
-def authenticate_user():
+def login_button_func():
     user, conf = authenticate.authenticate_face()
 
-    #if conf > FINGERPRINT_CONF:
-        #if not authenticate.authenticate_fingerprint(user):
-            #user = False
-    
-    return user, conf
-
-def login_button_func():
-    user, conf = authenticate_user()
-
-    if not user:
+    if not user or conf > FINGERPRINT_CONF:
         CONTROLLER.show_page("FingerprintScreen")
     else:
         CONTROLLER.show_page("HudScreen", user)
+
+def fingerprint_verif_func(user):
+
+    verif = FINGERPRINT_SENSOR.verify_person(user-1)
+
+    if verif:
+        CONTROLLER.show_page("HudScreen", user)
+    else:
+        CONTROLLER.show_page("LockedScreen", {'notification':'Login attempt failed, please try again. View the help page for more info.'})
 
 # /////////////////////////////// #
 # Functions for registering users #

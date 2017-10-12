@@ -24,6 +24,7 @@ class Command:
     ENROLL3 = 0x25
     IS_PRESS_FINGER = 0x26
     DELETE_ID = 0x40
+    VERIFY = 0x50
     IDENTIFY = 0x51
     CAPTURE = 0x60
 
@@ -149,6 +150,15 @@ class FingerprintScanner:
 
     def delete_person(self, person_id):
         resp = self._do_command(Command.DELETE_ID, person_id)
+        
+        return resp.ok
+
+    def verify_person(self, userId):
+        self.change_led(True, False)
+        self.capture_finger()
+        resp = self._do_command(Command.VERIFY, userId)
+        self._revert_led()
+
         return resp.ok
 
     def identify_person(self):
@@ -169,7 +179,7 @@ class FingerprintScanner:
         else:
             if resp.ok:
                 raise FingerprintException('Cannot generate error for command that succeeded!')
-                
+
             print(self.errors[resp.parameter])
 
     def close(self):
