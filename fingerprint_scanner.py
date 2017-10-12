@@ -106,7 +106,9 @@ class FingerprintScanner:
         return resp.ok
 
     def identify_person(self):
+        self.change_led()
         resp = self._do_command(Command.IDENTIFY)
+        self.change_led(False)
         if resp.ok:
             return resp.parameter
         else:
