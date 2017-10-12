@@ -30,19 +30,34 @@ class Command:
 
 
 class FingerprintScanner:
+    errors = {
+        0x1003: "ID out of range",
+        0x1004: "ID is not used",
+        0x1005: "ID is already used",
+        0x1006: "Communication Error",
+        0x1007: "1:1 Verification Error",
+        0x1008: "1:N Identification Error",
+        0x1009: "The database is full",
+        0x100A: "The database is empty",
+        0x100B: "Invalid order of enrollment",
+        0x100C: "Too bad fingerprint",
+        0x100D: "Enrollment Failure",
+        0x100E: "Command not supported",
+        0x100F: "Device Error",
+        0x1010: "Capturing is cancelled",
+        0x1011: "Invalid Parameter",
+        0x1012: "Finger is not pressed",
+        
+    }
     def __init__(self, port):
         self._ser = serial.Serial(port, baudrate=9600, timeout=2)
         self._open()
         self.led = False
-
-    def _raise_error(self, message):
-        self._ser.close()
-        raise FingerprintException(message)
     
     def _open(self):
         retval = self._do_command(Command.OPEN)
         if not retval:
-            self.print_error("Cannot open fingerprint sensor.")
+            raise"Cannot open fingerprint sensor.")
 
     def _revert_led(self):
         senddata = 1 if self.led else 0
