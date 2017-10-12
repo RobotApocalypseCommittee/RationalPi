@@ -100,7 +100,7 @@ class FingerprintScanner:
             self.change_led()
             while not self.is_finger_pressed(): time.sleep(0.1)
             time.sleep(0.5)
-            self.capture_finger()
+            resp = self.capture_finger()
             if not resp.ok:
                 print(resp.parameter)
             resp = self._do_command(Command.ENROLL1 + i)
