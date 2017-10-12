@@ -119,6 +119,7 @@ class FingerprintScanner:
 
     def identify_person(self):
         self.change_led()
+        self.capture_finger()
         resp = self._do_command(Command.IDENTIFY)
         self.change_led(False)
         if resp.ok:
