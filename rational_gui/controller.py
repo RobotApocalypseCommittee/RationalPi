@@ -3,9 +3,10 @@ import tkinter as tk
 import tkinter.font
 
 class Controller(tk.Tk):
+    padding=3
+    dimensions="{0}x{1}+0+0"
     def __init__(self, fullscreen=False, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        self.padding = 10
 
         self.title_font = tk.font.Font(
             family='Helvetica', size=18, weight="bold", slant="italic")
