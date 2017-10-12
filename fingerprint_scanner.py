@@ -64,8 +64,10 @@ class FingerprintScanner:
         self._do_command(Command.CHANGE_LED, senddata)
 
     def is_finger_pressed(self):
+        self.change_led()
         resp = self._do_command(Command.IS_PRESS_FINGER)
-        if (resp.data == 0):
+        self.change_led(False)
+        if (resp.parameter == 0):
             return True
         else:
             return False
