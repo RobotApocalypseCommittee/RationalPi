@@ -13,7 +13,9 @@ class Controller(tk.Tk):
         self.geometry('{}x{}'.format(800, 460))
         self.configure(background='white')
         if fullscreen:
-            self.attributes("-fullscreen", True)
+            self.overrideredirect(True)
+            self.overrideredirect(False)
+            self.attributes('-fullscreen',True)
         
 
         # the container is where we'll stack a bunch of frames
