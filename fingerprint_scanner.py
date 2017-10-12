@@ -1,6 +1,3 @@
-import binascii
-import enum
-import sys
 import time
 
 import serial
@@ -60,7 +57,7 @@ class FingerprintScanner:
         retval = self._do_command(Command.OPEN)
 
         if not retval:
-            self.print_error("Cannot open fingerprint sensor.")
+            self.print_error(text="Cannot open fingerprint sensor.")
 
     def _revert_led(self):
         senddata = 1 if self.led else 0
@@ -79,14 +76,13 @@ class FingerprintScanner:
 
             if (response.ok):
                 return response
-
             else:
-                self.print_error(self.errors[response.parameter])
+                self.print_error(response)
 
                 return response
 
         else:
-            self.print_error("Cannot write to serial, port closed.")
+            self.print_error(text="Cannot write to serial, port closed.")
 
     def change_led(self, state = True, preserve=True):
         senddata = 1 if state else 0
@@ -121,8 +117,7 @@ class FingerprintScanner:
                 break
 
         if next_id == 20:
-            self.print_error("No more space for people.")
-
+            self.print_error(text="No more space for people.")
         else:
             return next_id
 
@@ -139,12 +134,12 @@ class FingerprintScanner:
             resp = self.capture_finger()
 
             if not resp.ok:
-                print(resp.parameter)
+                self.print_error(resp)
 
             resp = self._do_command(Command.ENROLL1 + i)
 
             if not resp.ok:
-                print(resp.parameter)
+                self.print_error(resp)
 
             self.change_led(False)
 
@@ -164,13 +159,18 @@ class FingerprintScanner:
 
         if resp.ok:
             return resp.parameter
-
         else:
             return False
 
-    @staticmethod
-    def print_error(error):
-        print(error)
+    def print_error(self, resp=None, text=None):
+        
+        if text != None:
+            print(text)
+        else:
+            if resp.ok:
+                raise FingerprintException('Cannot generate error for command that succeeded!')
+                
+            print(self.errors[resp.parameter])
 
     def close(self):
         self._ser.close()
