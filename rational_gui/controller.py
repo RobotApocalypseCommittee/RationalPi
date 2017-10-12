@@ -5,6 +5,7 @@ import tkinter.font
 class Controller(tk.Tk):
     def __init__(self, fullscreen=False, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
+        self.padding = 10
 
         self.title_font = tk.font.Font(
             family='Helvetica', size=18, weight="bold", slant="italic")
