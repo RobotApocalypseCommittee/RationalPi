@@ -2,7 +2,13 @@ import enum
 import serial
 import binascii
 import sys
+import time
 
+class ResponsePacket:
+    def __init__(self, data):
+        self.data = data
+        self.ok = (int.from_bytes(data[8:10], 'little') == 0x30)
+        self.parameter = int.from_bytes(data[4:8], 'little')
 
 class Command(enum.Enum):
     OPEN = 0x01,
@@ -16,7 +22,8 @@ class Command(enum.Enum):
     ENROLL3 = 0x25,
     IS_PRESS_FINGER = 0x26,
     DELETE_ID = 0x40,
-    IDENTIFY = 0x51
+    IDENTIFY = 0x51,
+    CAPTURE = 0x60
 
 
 class FingerprintScanner:
@@ -41,11 +48,12 @@ class FingerprintScanner:
         command.extend((sum(command)).to_bytes(2, byteorder='little'))
         if (self._ser.is_open):
             self._ser.write(command)
-            response = self._ser.read(12)
-            if (int.from_bytes(response[8:10], byteorder='little') == 0x30):
-                return True
+            response_data = self._ser.read(12)
+            response = ResponsePacket(response_data)
+            if (response.ok):
+                return response
             else:
-                return False # TODO: Add error code strings...
+                return response # TODO: Add error code strings...
         else:
             self.print_error("Cannot write to serial, port closed.")
     def change_led(self, state = True):
@@ -53,7 +61,63 @@ class FingerprintScanner:
             senddata = 1
         else:
             senddata = 0
-        retval = self._do_command(Command.CHANGE_LED, senddata)
+        self._do_command(Command.CHANGE_LED, senddata)
+
+    def is_finger_pressed(self):
+        resp = self._do_command(Command.IS_PRESS_FINGER)
+        if (resp.data == 0):
+            return True
+        else:
+            return False
+
+    def capture_finger(self):
+        resp = self._do_command(Command.CAPTURE)
+
+    def count_enrolled(self):
+        resp = self._do_command(Command.GET_ENROLL_COUNT)
+        return resp.parameter
+
+    def determine_next_id(self):
+        next_id = 20
+        for i in range(20):
+            if self._do_command(Command.CHECK_ENROLLED, i).ok:
+                next_id = i
+                break
+        if id == 20:
+            self.print_error("No more space for people.")
+        else:
+            return id
+
     
+    def enroll_person(self):
+        person_id = self.determine_next_id()
+        self._do_command(Command.ENROLL_START, person_id)
+        for i in range(3):
+            self.change_led()
+            while not self.is_finger_pressed(): pass
+            self.capture_finger()
+            self._do_command(Command.ENROLL1 + i)
+            self.change_led(False)
+            while self.is_finger_pressed(): pass
+        return person_id
+
+    def delete_person(self, id):
+        resp = self._do_command(Command.DELETE_ID, id)
+        return resp.ok
+
+    def identify_person(self):
+        resp = self._do_command(Command.IDENTIFY)
+        if resp.ok:
+            return resp.parameter
+        else:
+            return False
+    def close(self):
+        self._ser.close()
+
+            
+
+
+
+
 
 
