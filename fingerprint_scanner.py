@@ -99,13 +99,15 @@ class FingerprintScanner:
         for i in range(3):
             self.change_led()
             while not self.is_finger_pressed(): time.sleep(0.1)
-            time.sleep(0.5)
+            print("Enroll "+str(i))
+            time.sleep(1)
             resp = self.capture_finger()
             if not resp.ok:
                 print(resp.parameter)
             resp = self._do_command(Command.ENROLL1 + i)
             if not resp.ok:
                 print(resp.parameter)
+            time.sleep(1)
             self.change_led(False)
             while self.is_finger_pressed(): time.sleep(0.1)
         return person_id
