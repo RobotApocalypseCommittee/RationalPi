@@ -57,7 +57,7 @@ class FingerprintScanner:
     def _open(self):
         retval = self._do_command(Command.OPEN)
         if not retval:
-            raise"Cannot open fingerprint sensor.")
+            raise "Cannot open fingerprint sensor."
 
     def _revert_led(self):
         senddata = 1 if self.led else 0
@@ -144,6 +144,10 @@ class FingerprintScanner:
             return resp.parameter
         else:
             return False
+
+    def print_error(self, error):
+        raise error
+
     def close(self):
         self._ser.close()
 
