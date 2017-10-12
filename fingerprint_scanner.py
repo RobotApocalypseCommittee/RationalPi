@@ -98,7 +98,9 @@ class FingerprintScanner:
             self.change_led()
             while not self.is_finger_pressed(): pass
             self.capture_finger()
-            self._do_command(Command.ENROLL1 + i)
+            resp = self._do_command(Command.ENROLL1 + i)
+            if not resp.ok:
+                print(resp.parameter)
             self.change_led(False)
             while self.is_finger_pressed(): pass
         return person_id
