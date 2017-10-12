@@ -11,18 +11,18 @@ class ResponsePacket:
         self.parameter = int.from_bytes(data[4:8], 'little')
 
 class Command:
-    OPEN = 0x01,
-    CLOSE = 0x02,
-    CHANGE_LED = 0x12,
-    GET_ENROLL_COUNT = 0x20,
-    CHECK_ENROLLED = 0x21,
-    ENROLL_START = 0x22,
-    ENROLL1 = 0x23,
-    ENROLL2 = 0x24,
-    ENROLL3 = 0x25,
-    IS_PRESS_FINGER = 0x26,
-    DELETE_ID = 0x40,
-    IDENTIFY = 0x51,
+    OPEN = 0x01
+    CLOSE = 0x02
+    CHANGE_LED = 0x12
+    GET_ENROLL_COUNT = 0x20
+    CHECK_ENROLLED = 0x21
+    ENROLL_START = 0x22
+    ENROLL1 = 0x23
+    ENROLL2 = 0x24
+    ENROLL3 = 0x25
+    IS_PRESS_FINGER = 0x26
+    DELETE_ID = 0x40
+    IDENTIFY = 0x51
     CAPTURE = 0x60
 
 
