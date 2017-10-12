@@ -30,6 +30,7 @@ class FingerprintScanner:
     def __init__(self, port):
         self._ser = serial.Serial(port, baudrate=9600, timeout=2)
         self._open()
+        self.led = False
 
     def print_error(self, string, stopping=True):
         print("[ERROR] "+ string)
@@ -59,14 +60,16 @@ class FingerprintScanner:
     def change_led(self, state = True):
         if state:
             senddata = 1
+            self.led = True
         else:
             senddata = 0
+            self.led = False
         self._do_command(Command.CHANGE_LED, senddata)
 
     def is_finger_pressed(self):
         self.change_led()
         resp = self._do_command(Command.IS_PRESS_FINGER)
-        self.change_led(False)
+        self.change_led(self.led)
         if (resp.parameter == 0):
             return True
         else:
@@ -100,14 +103,12 @@ class FingerprintScanner:
             self.change_led()
             while not self.is_finger_pressed(): time.sleep(0.1)
             print("Enroll "+str(i))
-            time.sleep(1)
             resp = self.capture_finger()
             if not resp.ok:
                 print(resp.parameter)
             resp = self._do_command(Command.ENROLL1 + i)
             if not resp.ok:
                 print(resp.parameter)
-            time.sleep(1)
             self.change_led(False)
             while self.is_finger_pressed(): time.sleep(0.1)
         return person_id
