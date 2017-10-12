@@ -96,13 +96,13 @@ class FingerprintScanner:
         self._do_command(Command.ENROLL_START, person_id)
         for i in range(3):
             self.change_led()
-            while not self.is_finger_pressed(): pass
+            while not self.is_finger_pressed(): time.sleep(0.1)
             self.capture_finger()
             resp = self._do_command(Command.ENROLL1 + i)
             if not resp.ok:
                 print(resp.parameter)
             self.change_led(False)
-            while self.is_finger_pressed(): pass
+            while self.is_finger_pressed(): time.sleep(0.1)
         return person_id
 
     def delete_person(self, id):
