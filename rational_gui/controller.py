@@ -10,12 +10,14 @@ class Controller(tk.Tk):
             family='Helvetica', size=18, weight="bold", slant="italic")
 
         self.resizable(width=False, height=False)
-        self.geometry('{}x{}'.format(800, 460))
         self.configure(background='white')
         if fullscreen:
-            self.overrideredirect(True)
-            self.overrideredirect(False)
-            self.attributes('-fullscreen',True)
+            self.wm_attributes('-fullscreen','true')
+            width=self.winfo_screenwidth()-self.padding
+            height=self.winfo_screenheight()-self.padding
+            self.geometry(self.dimensions.format(width, height))
+        else:
+            self.geometry('{}x{}'.format(800, 460))
         
 
         # the container is where we'll stack a bunch of frames

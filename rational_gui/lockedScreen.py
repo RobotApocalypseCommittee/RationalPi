@@ -17,9 +17,6 @@ class LockedScreen(Page):
 
         lockedBg = tk.PhotoImage(file=get_imagepath("lockedScreen"))
         lockedButton = tk.PhotoImage(file=get_imagepath("unlockTest"))
-
-        self.width = 800
-        self.height = 460
         self.grid()
 
         #background things

@@ -13,8 +13,6 @@ class VerificationScreen(Page):
     def __init__(self, parent):
         #basic setup things
         super(VerificationScreen, self).__init__(parent)
-        self.width = 800
-        self.height = 460
         self.grid()
 
         verificationBg = tk.PhotoImage(file=get_imagepath("verificationScreen"))
@@ -45,7 +43,7 @@ class VerificationScreen(Page):
 
         #take photo image
         try:
-            take_photo_button = tk.Button(self, command=tkinter_funcs.authenticate_user, image=self.take_photo_img, bg="blue", activebackground="red", bd=0)
+            take_photo_button = tk.Button(self, command=tkinter_funcs.login_button_func, image=self.take_photo_img, bg="blue", activebackground="red", bd=0)
         except NameError:
             take_photo_button = tk.Button(self, command=lambda: print('noot'), image=self.take_photo_img, bg="blue", activebackground="red", bd=0)
         take_photo_button.place(x=330, y=320)
