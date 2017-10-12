@@ -10,7 +10,7 @@ class Controller(tk.Tk):
             family='Helvetica', size=18, weight="bold", slant="italic")
 
         self.resizable(width=False, height=False)
-        self.geometry('{}x{}'.format(800, 460))
+        self.geometry('{}x{}'.format(800, 480))
         self.configure(background='white')
         if fullscreen:
             self.overrideredirect(True)
@@ -36,4 +36,4 @@ class Controller(tk.Tk):
         self.pages[page.__name__] = page(parent=self.container)
         self.pages[page.__name__].grid(row=0, column=0, sticky="nsew")
 
-CONTROLLER = Controller(True) # PLS IMPORT ME FOR LOLS
+CONTROLLER = Controller(False) # PLS IMPORT ME FOR LOLS
