@@ -3,7 +3,7 @@ import tkinter as tk
 import tkinter.font
 
 class Controller(tk.Tk):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, fullscreen=False, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
         self.title_font = tk.font.Font(
@@ -12,6 +12,9 @@ class Controller(tk.Tk):
         self.resizable(width=False, height=False)
         self.geometry('{}x{}'.format(800, 460))
         self.configure(background='white')
+        if fullscreen:
+            self.tk.attributes("-fullscreen", True)
+        
 
         # the container is where we'll stack a bunch of frames
         # on top of each other, then the one we want visible
@@ -31,4 +34,4 @@ class Controller(tk.Tk):
         self.pages[page.__name__] = page(parent=self.container)
         self.pages[page.__name__].grid(row=0, column=0, sticky="nsew")
 
-CONTROLLER = Controller() # PLS IMPORT ME FOR LOLS
+CONTROLLER = Controller(True) # PLS IMPORT ME FOR LOLS

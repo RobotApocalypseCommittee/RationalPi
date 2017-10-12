@@ -1,21 +1,13 @@
-import time
+'''A temporary file for testing the gui(since package relative paths are dodge)'''
 import tkinter as tk
 
-from settings import FACE_RECOGNISER
-import rational_gui.lockedScreen
-import tools
+from rational_gui import verificationScreen, hudScreen, lockedScreen, fingerprintScreen
+from rational_gui.controller import CONTROLLER
 
-time.sleep(2) # allows time for the camera to set up for the first time
+CONTROLLER.add_page(verificationScreen.VerificationScreen)
+CONTROLLER.add_page(hudScreen.HudScreen)
+CONTROLLER.add_page(lockedScreen.LockedScreen)
+CONTROLLER.add_page(fingerprintScreen.FingerprintScreen)
 
-tools.do_training() # train the recogniser
-
-# init the root window
-root = tk.Tk()
-rational_gui.gui.init_photos()
-root.resizable(width=False, height=False)
-root.geometry('{}x{}'.format(800, 460))
-root.configure(background='white')
-
-window = rational_gui.lockedScreen.LockedScreen(root)
-
-root.mainloop()
+CONTROLLER.show_page("LockedScreen")
+tk.mainloop()
