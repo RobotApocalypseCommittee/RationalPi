@@ -72,8 +72,10 @@ class FingerprintScanner:
         else:
             return False
 
-    def capture_finger(self):
-        resp = self._do_command(Command.CAPTURE)
+    def capture_finger(self, slow=True):
+        senddata = 1 if slow else 0
+        resp = self._do_command(Command.CAPTURE, senddata)
+        return resp
 
     def count_enrolled(self):
         resp = self._do_command(Command.GET_ENROLL_COUNT)
@@ -97,7 +99,10 @@ class FingerprintScanner:
         for i in range(3):
             self.change_led()
             while not self.is_finger_pressed(): time.sleep(0.1)
+            time.sleep(0.5)
             self.capture_finger()
+            if not resp.ok:
+                print(resp.parameter)
             resp = self._do_command(Command.ENROLL1 + i)
             if not resp.ok:
                 print(resp.parameter)
