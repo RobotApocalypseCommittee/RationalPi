@@ -10,6 +10,9 @@ class ResponsePacket:
         self.ok = (int.from_bytes(data[8:10], 'little') == 0x30)
         self.parameter = int.from_bytes(data[4:8], 'little')
 
+class FingerprintException(Exception):
+    pass
+
 class Command:
     OPEN = 0x01
     CLOSE = 0x02
@@ -32,15 +35,18 @@ class FingerprintScanner:
         self._open()
         self.led = False
 
-    def print_error(self, string, stopping=True):
-        print("[ERROR] "+ string)
-        if stopping:
-            self.close()
+    def _raise_error(self, message):
+        self._ser.close()
+        raise FingerprintException(message)
     
     def _open(self):
         retval = self._do_command(Command.OPEN)
         if not retval:
             self.print_error("Cannot open fingerprint sensor.")
+
+    def _revert_led(self):
+        senddata = 1 if self.led else 0
+        self._do_command(Command.CHANGE_LED, senddata)
     
     def _do_command(self, command_id, data=0):
         command = bytearray([0x55, 0xAA, 0x01, 0x00])
@@ -57,19 +63,15 @@ class FingerprintScanner:
                 return response # TODO: Add error code strings...
         else:
             self.print_error("Cannot write to serial, port closed.")
-    def change_led(self, state = True):
-        if state:
-            senddata = 1
-            self.led = True
-        else:
-            senddata = 0
-            self.led = False
+    def change_led(self, state = True, preserve=True):
+        senddata = 1 if state else 0
+        self.led = state if preserve else self.led
         self._do_command(Command.CHANGE_LED, senddata)
 
     def is_finger_pressed(self):
-        self.change_led()
+        self.change_led(True, False)
         resp = self._do_command(Command.IS_PRESS_FINGER)
-        self.change_led(self.led)
+        self._revert_led()
         if (resp.parameter == 0):
             return True
         else:
@@ -77,7 +79,9 @@ class FingerprintScanner:
 
     def capture_finger(self, slow=True):
         senddata = 1 if slow else 0
+        self.change_led(True, False)
         resp = self._do_command(Command.CAPTURE, senddata)
+        self._revert_led
         return resp
 
     def count_enrolled(self):
@@ -102,7 +106,6 @@ class FingerprintScanner:
         for i in range(3):
             self.change_led()
             while not self.is_finger_pressed(): time.sleep(0.1)
-            print("Enroll "+str(i))
             resp = self.capture_finger()
             if not resp.ok:
                 print(resp.parameter)
@@ -118,10 +121,10 @@ class FingerprintScanner:
         return resp.ok
 
     def identify_person(self):
-        self.change_led()
+        self.change_led(True, False)
         self.capture_finger()
         resp = self._do_command(Command.IDENTIFY)
-        self.change_led(False)
+        self._revert_led()
         if resp.ok:
             return resp.parameter
         else:
