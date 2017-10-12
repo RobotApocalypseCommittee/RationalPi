@@ -10,7 +10,7 @@ class ResponsePacket:
         self.ok = (int.from_bytes(data[8:10], 'little') == 0x30)
         self.parameter = int.from_bytes(data[4:8], 'little')
 
-class Command(enum.Enum):
+class Command:
     OPEN = 0x01,
     CLOSE = 0x02,
     CHANGE_LED = 0x12,
