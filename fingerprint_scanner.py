@@ -88,7 +88,7 @@ class FingerprintScanner:
         if id == 20:
             self.print_error("No more space for people.")
         else:
-            return id
+            return next_id
 
     
     def enroll_person(self):
