@@ -19,6 +19,11 @@ with open('user_data.json', 'r') as userFile:
     USER_DICT = json.load(userFile)
     USER_DICT = {int(key):val for key, val in USER_DICT.items()}
 
+with open('misc_data.json', 'r') as miscFile:
+    _stored_vars = json.load(miscFile)
+    CRACKERS_LEFT = int(_stored_vars['crackersLeft'])
+    # whatever else gets added (if anything...)
+
 # inits misc stuff for authentication
 try:
     FACE_RECOGNISER = cv2.face.LBPHFaceRecognizer_create()
