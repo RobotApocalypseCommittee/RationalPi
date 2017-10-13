@@ -14,7 +14,7 @@ class FingerprintScreen(Page):
         self.grid()
 
 
-        verificationBg = tk.PhotoImage(file=get_imagepath("verificationScreen"))
+        verificationBg = tk.PhotoImage(file=get_imagepath("verificationBg"))
 
         #background things
         bg_lbl = tk.Label(self, image=verificationBg)

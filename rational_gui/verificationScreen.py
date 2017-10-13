@@ -2,6 +2,7 @@ import tkinter as tk
 
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
+from rational_gui.controller import CONTROLLER
 
 try:
     import tkinter_funcs
@@ -45,5 +46,5 @@ class VerificationScreen(Page):
         try:
             take_photo_button = tk.Button(self, command=tkinter_funcs.login_button_func, image=self.take_photo_img, bg="blue", activebackground="red", bd=0)
         except NameError:
-            take_photo_button = tk.Button(self, command=lambda: print('noot'), image=self.take_photo_img, bg="black", activebackground="black", bd=0)
+            take_photo_button = tk.Button(self, command=lambda: CONTROLLER.show_page("HudScreen") , image=self.take_photo_img, bg="black", activebackground="black", bd=0)
         take_photo_button.place(x=350, y=368)
