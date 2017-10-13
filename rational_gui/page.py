@@ -7,4 +7,5 @@ class Page(tk.Frame):
 
     def render(self, data=False):
         '''Receives render data through kwargs, and has to change values.'''
-        pass
+        if not data == False:
+            pass

@@ -31,22 +31,22 @@ class Command:
 
 class FingerprintScanner:
     errors = {
-        0x1003: "ID out of range",
-        0x1004: "ID is not used",
-        0x1005: "ID is already used",
-        0x1006: "Communication Error",
-        0x1007: "1:1 Verification Error",
-        0x1008: "1:N Identification Error",
-        0x1009: "The database is full",
-        0x100A: "The database is empty",
-        0x100B: "Invalid order of enrollment",
-        0x100C: "Too bad fingerprint",
-        0x100D: "Enrollment Failure",
-        0x100E: "Command not supported",
-        0x100F: "Device Error",
-        0x1010: "Capturing is cancelled",
-        0x1011: "Invalid Parameter",
-        0x1012: "Finger is not pressed",
+        0x1003: ("ID out of range", True),
+        0x1004: ("ID is not used", True),
+        0x1005: ("ID is already used", True),
+        0x1006: ("Communication Error", True),
+        0x1007: ("1:1 Verification Error", False),
+        0x1008: ("1:N Identification Error", False),
+        0x1009: ("The database is full", False),
+        0x100A: ("The database is empty", False),
+        0x100B: ("Invalid order of enrollment", True),
+        0x100C: ("Too bad fingerprint", False),
+        0x100D: ("Enrollment Failure", False),
+        0x100E: ("Command not supported", True),
+        0x100F: ("Device Error", True),
+        0x1010: ("Capturing is cancelled", False),
+        0x1011: ("Invalid Parameter", True),
+        0x1012: ("Finger is not pressed", False),
 
     }
     def __init__(self, port):
@@ -58,7 +58,7 @@ class FingerprintScanner:
         retval = self._do_command(Command.OPEN)
 
         if not retval:
-            self.print_error(text="Cannot open fingerprint sensor.")
+            self.print_error(text="Cannot open fingerprint sensor.", fatal=True)
 
     def _revert_led(self):
         senddata = 1 if self.led else 0
@@ -83,7 +83,7 @@ class FingerprintScanner:
                 return response
 
         else:
-            self.print_error(text="Cannot write to serial, port closed.")
+            self.print_error(text="Cannot write to serial, port closed.", fatal=True)
 
     def change_led(self, state = True, preserve=True):
         senddata = 1 if state else 0
@@ -178,15 +178,22 @@ class FingerprintScanner:
         else:
             return False
 
-    def print_error(self, resp=None, text=None):
+    def print_error(self, resp=None, text=None, fatal=False):
         
         if text != None:
-            print(text)
+            error = text
         else:
             if resp.ok:
-                raise FingerprintException('Cannot generate error for command that succeeded!')
-
-            print(self.errors[resp.parameter])
+                raise FingerprintException('Cannot generate error for a command that succeeded!')
+            
+            fatal = self.errors[resp.parameter][1]
+            
+            error = self.errors[resp.parameter][0]
+        
+        if fatal:
+            raise FingerprintException(error)
+        else:
+            print(error)
 
     def close(self):
         self._ser.close()
