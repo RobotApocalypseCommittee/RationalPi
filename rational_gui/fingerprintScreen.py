@@ -10,7 +10,7 @@ class FingerprintScreen(Page):
     def __init__(self, parent):
         super(FingerprintScreen, self).__init__(parent)
         self.width = 800
-        self.height = 460
+        self.height = 480
         self.grid()
 
 

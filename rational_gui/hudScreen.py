@@ -10,7 +10,7 @@ class HudScreen(Page):
         #setup things
         super().__init__(parent)
         self.width = 800
-        self.height = 460
+        self.height = 480
         self.grid()
         crackers = {}
 
