@@ -1,3 +1,4 @@
+'''Module to interface with the fingerprint scanner.'''
 import time
 
 import serial
@@ -85,7 +86,7 @@ class FingerprintScanner:
         else:
             self.print_error(text="Cannot write to serial, port closed.", fatal=True)
 
-    def change_led(self, state = True, preserve=True):
+    def change_led(self, state=True, preserve=True):
         senddata = 1 if state else 0
         self.led = state if preserve else self.led
         self._do_command(Command.CHANGE_LED, senddata)
