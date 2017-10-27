@@ -6,9 +6,8 @@ import time
 import numpy as np
 import cv2
 
-from settings import CONF_THRESHOLD, CAMERA, FACE_CASCADE, FACE_RECOGNISER, DEVICE_NAME, SAVE_IMAGE_CONF
+from settings import CONF_THRESHOLD, CAMERA, FACE_CASCADE, FACE_RECOGNISER, SAVE_IMAGE_CONF
 import tools
-from fps import FPS_GT511C1R
 from picamera.array import PiRGBArray
 
 def take_login_photo(): # takes a photo and formats it for the login attempt
@@ -47,12 +46,8 @@ def authenticate_face(): # returns the (predicted) user id from a face (0 means 
 
         if id_list_confs[winningKey] < SAVE_IMAGE_CONF:
             tools.save_new_image(winningKey, photo_dict[winningKey])
+            tools.update()
 
         return winningKey, id_list_confs[winningKey]
     else: # otherwise, return 0 (no faces, unidentified)
         return False, 1000
-
-def authenticate_fingerprint(userId):
-    fingerprintSensor = FPS_GT511C1R(device_name=DEVICE_NAME, baud=115200, timeout=2, is_com=False)
-
-    return 1

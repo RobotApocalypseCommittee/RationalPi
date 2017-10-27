@@ -4,8 +4,10 @@ try:
     from picamera import PiCamera
 except ImportError:
     pass
+
 import cv2
 
+from fingerprint_scanner import FingerprintScanner
 
 # inits camera
 try:
@@ -38,4 +40,8 @@ SAVE_IMAGE_CONF = 15
 
 FINGERPRINT_CONF = 15
 
-DEVICE_NAME = '/dev/ttyUSB0'
+DEVICE_NAME = '/dev/ttyAMA0'
+
+FINGERPRINT_SENSOR = FingerprintScanner(DEVICE_NAME)
+
+TRAINED_FILES = []
