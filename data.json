@@ -1,0 +1,15 @@
+{
+    "userDict": {
+        "1":"Atto Allas",
+        "2":"Joe Bell",
+        "3":"Bhuvan Belur",
+        "4":"William Yu"
+    },
+    "crackersLeft":"14",
+
+    "confThreshold":"1000",
+    "saveImageConf":"15",
+    "fingerprintConf":"15",
+
+    "deviceName":"/dev/ttyAMA0"
+}

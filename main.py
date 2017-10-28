@@ -1,8 +1,11 @@
 '''A temporary file for testing the gui(since package relative paths are dodge)'''
 import tkinter as tk
 
+import tools
 from rational_gui import verificationScreen, hudScreen, lockedScreen, fingerprintScreen
 from rational_gui.controller import CONTROLLER
+
+tools.do_training()
 
 CONTROLLER.add_page(verificationScreen.VerificationScreen)
 CONTROLLER.add_page(hudScreen.HudScreen)
