@@ -8,6 +8,7 @@ except ImportError:
 import cv2
 
 from fingerprint_scanner import FingerprintScanner
+from rational_utils.data_manager import SavedDict
 
 # inits camera
 try:
@@ -16,6 +17,8 @@ try:
 except NameError:
     pass
 
+SYSTEM_DATA = SavedDict("data.json")
+'''
 # gets the list of users
 with open('user_data.json', 'r') as userFile:
     USER_DICT = json.load(userFile)
@@ -25,6 +28,7 @@ with open('misc_data.json', 'r') as miscFile:
     _stored_vars = json.load(miscFile)
     CRACKERS_LEFT = int(_stored_vars['crackersLeft'])
     # whatever else gets added (if anything...)
+'''
 
 # inits misc stuff for authentication
 try:
