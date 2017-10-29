@@ -32,13 +32,8 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
         faceId = os.path.split(image_path)[1].split('.')[0]
         print(faceId)
 
-        faceList = FACE_CASCADE.detectMultiScale(image, 1.4)
-
-        for (x, y, w, h) in faceList:
-            realImage = image[y: y + h, x: x + w]
-
-            faceImages.append(realImage)
-            faceIdList.append(int(faceId))
+        faceImages.append(image)
+        faceIdList.append(faceId)
 
     # return the images list and labels list
     return faceImages, faceIdList, faceFileNames

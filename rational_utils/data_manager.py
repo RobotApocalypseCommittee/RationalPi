@@ -13,6 +13,14 @@ class SavedDict(dict):
     def load(self):
         with open(self._filename) as f:
             self.update(json.load(f))
+        
+        for key, val in self.items():
+            try:
+                self[key] = int(val)
+            except TypeError:
+                continue
+        
+        self['userDict'] = {int(key):val for key, val in self['userDict'].items()}
 
     def save(self):
         with open(self._filename, 'w') as f:

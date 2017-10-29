@@ -110,7 +110,7 @@ class FingerprintScanner:
         resp = self._do_command(Command.GET_ENROLL_COUNT)
         return resp.parameter
 
-    def determine_next_id(self):
+    def determine_next_id(self): # MIGHT NOT BE NEEDED
         next_id = 20
 
         for i in range(20):
@@ -124,8 +124,7 @@ class FingerprintScanner:
             return next_id
 
 
-    def enroll_person(self):
-        person_id = self.determine_next_id()
+    def enroll_person(self, person_id):
         self._do_command(Command.ENROLL_START, person_id)
 
         for i in range(3):
@@ -146,8 +145,6 @@ class FingerprintScanner:
             self.change_led(False)
 
             while self.is_finger_pressed(): time.sleep(0.1)
-
-        return person_id
 
     def delete_person(self, person_id):
         resp = self._do_command(Command.DELETE_ID, person_id)
