@@ -6,9 +6,8 @@ import time
 import numpy as np
 import cv2
 
-from settings import CONF_THRESHOLD, CAMERA, FACE_CASCADE, FACE_RECOGNISER, DEVICE_NAME, SAVE_IMAGE_CONF
+from settings import SYSTEM_DATA, CAMERA, FACE_CASCADE, FACE_RECOGNISER
 import tools
-from fps import FPS_GT511C1R
 from picamera.array import PiRGBArray
 
 def take_login_photo(): # takes a photo and formats it for the login attempt
@@ -36,7 +35,7 @@ def authenticate_face(): # returns the (predicted) user id from a face (0 means 
         #cv2.imshow("Analysing face...", grayImageArray[y: y + h, x: x + w]) # look nice
         cv2.waitKey(20) # wait for a bit
 
-        if conf > CONF_THRESHOLD: # if unconfident, put the confidence into the 0 key of the dict
+        if conf > SYSTEM_DATA['confThreshold']: # if unconfident, put the confidence into the 0 key of the dict
             id_list_confs[0] = conf
         else: # else put the conficence in that user's id key in the dict (i.e. for person with id 5 and a face of confidence 15, it would look like 5:15)
             id_list_confs[id_predicted] = conf
@@ -45,14 +44,10 @@ def authenticate_face(): # returns the (predicted) user id from a face (0 means 
     if np.any(faceList): # if there were any faces, return the id of the prediction with the lowest confidence (low confidence means it is very confident)
         winningKey = min(id_list_confs, key=id_list_confs.get)
 
-        if id_list_confs[winningKey] < SAVE_IMAGE_CONF:
+        if id_list_confs[winningKey] < SYSTEM_DATA['saveImageConf']:
             tools.save_new_image(winningKey, photo_dict[winningKey])
+            tools.update()
 
         return winningKey, id_list_confs[winningKey]
     else: # otherwise, return 0 (no faces, unidentified)
         return False, 1000
-
-def authenticate_fingerprint(userId):
-    fingerprintSensor = FPS_GT511C1R(device_name=DEVICE_NAME, baud=115200, timeout=2, is_com=False)
-
-    return 1

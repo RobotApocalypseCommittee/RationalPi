@@ -4,11 +4,12 @@ import cv2
 import numpy as np
 from PIL import Image
 
-from settings import FACE_RECOGNISER, FACE_CASCADE
+from settings import FACE_RECOGNISER, FACE_CASCADE, TRAINED_FILES
 
 def get_face_data(): # gets faces in the Face Storage folder and returns the faces and their ids
     faceImages = []
     faceIdList = []
+    faceFileNames = []
 
     # gets all of the paths for the images
     image_paths = [
@@ -17,6 +18,12 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
         ]
 
     for image_path in image_paths:
+
+        if image_path in TRAINED_FILES:
+            continue
+
+        faceFileNames.append(image_path)
+
         # get the image and grayscale it (to make the numpy array work nicely)
         colorImage = cv2.imread(image_path)
         image = cv2.cvtColor(colorImage, cv2.COLOR_BGR2GRAY) # Definitely needed (for some reason)
@@ -25,24 +32,25 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
         faceId = os.path.split(image_path)[1].split('.')[0]
         print(faceId)
 
-        faceList = FACE_CASCADE.detectMultiScale(image, 1.4)
-
-        for (x, y, w, h) in faceList:
-            realImage = image[y: y + h, x: x + w]
-
-            faceImages.append(realImage)
-            faceIdList.append(int(faceId))
+        faceImages.append(image)
+        faceIdList.append(faceId)
 
     # return the images list and labels list
-    return faceImages, faceIdList
+    return faceImages, faceIdList, faceFileNames
 
 def do_training(): # trains the recogniser (done at startup)
-    faceImages, faceIdList = get_face_data() # gets the data
+    faceImages, faceIdList, faceFileNames = get_face_data() # gets the data
 
     FACE_RECOGNISER.train(faceImages, np.array(faceIdList)) # does the training
 
-def update(): # TODO
-    return
+    TRAINED_FILES.extend(faceFileNames)
+
+def update():
+    faceImages, faceIdList, faceFileNames = get_face_data() # gets the data
+
+    FACE_RECOGNISER.update(faceImages, np.array(faceIdList)) # does the updating
+
+    TRAINED_FILES.extend(faceFileNames)
 
 def save_new_image(userId, faceImage):
     # Gets the highest version number of the user's photo
