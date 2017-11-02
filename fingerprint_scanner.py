@@ -56,9 +56,12 @@ class FingerprintScanner:
         self.led = False
 
     def _open(self):
-        retval = self._do_command(Command.OPEN)
+        try:
+            retval = self._do_command(Command.OPEN)
 
-        if not retval:
+            if not retval:
+                self.print_error(text="Cannot open fingerprint sensor.", fatal=True)
+        except KeyError:
             self.print_error(text="Cannot open fingerprint sensor.", fatal=True)
 
     def _revert_led(self):
@@ -183,6 +186,7 @@ class FingerprintScanner:
         else:
             if resp.ok:
                 raise FingerprintException('Cannot generate error for a command that succeeded!')
+
             
             fatal = self.errors[resp.parameter][1]
             

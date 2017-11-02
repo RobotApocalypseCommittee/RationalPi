@@ -2,19 +2,20 @@
 
 try:
     from picamera import PiCamera
+    from picamera.exc import PiCameraError
 except ImportError:
     pass
 
 import cv2
 
-from fingerprint_scanner import FingerprintScanner
+from fingerprint_scanner import FingerprintScanner, FingerprintException
 from rational_utils.data_manager import SavedDict
 
 # inits camera
 try:
     CAMERA = PiCamera()
     CAMERA.rotation = 180
-except NameError:
+except (NameError, PiCameraError):
     pass
 
 SYSTEM_DATA = SavedDict("data.json")
@@ -27,6 +28,9 @@ try:
 except (NameError, AttributeError):
     print("Could not load CV2, Prepare for errors...")
 
-FINGERPRINT_SENSOR = FingerprintScanner(SYSTEM_DATA['deviceName'])
+try:
+    FINGERPRINT_SENSOR = FingerprintScanner(SYSTEM_DATA['deviceName'])
+except FingerprintException:
+    print("Pls plug the fingerprint scanner in....")
 
 TRAINED_FILES = []
