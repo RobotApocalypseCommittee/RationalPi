@@ -19,7 +19,8 @@ class VerificationScreen(Page):
         verificationBg = tk.PhotoImage(file=get_imagepath("verificationBg"))
         face_outline = tk.PhotoImage(file=get_imagepath("positionFace"))
         placeholder = tk.PhotoImage(file=get_imagepath("placeholder"))
-        instructions = tk.PhotoImage(file=get_imagepath("instructions"))
+        instructions = tk.PhotoImage(file=get_imagepath("plspositionboi"))
+        
         self.take_photo_img = tk.PhotoImage(file=get_imagepath("newCamera"))
 
         #background things
@@ -40,7 +41,7 @@ class VerificationScreen(Page):
         #instructions image
         instructions_lbl = tk.Label(self, image=instructions, borderwidth=0)
         instructions_lbl.image = instructions
-        instructions_lbl.place(x=646, y=170)
+        instructions_lbl.place(x=510, y=200)
 
         #take photo image
         try:
