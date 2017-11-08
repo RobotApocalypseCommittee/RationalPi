@@ -2,7 +2,7 @@ from gpiozero import PWMOutputDevice
 from rational_motors.mcp23017 import MCP23017
 
 class JoeSlot:
-    def __init__(self, mcp:MCP23017, pwm_pin, control_pins, supply_voltage):
+    def __init__(self, mcp: MCP23017, pwm_pin, control_pins, supply_voltage):
         self.mcp = mcp
         self.supply_voltage = supply_voltage
         self.control_pins = control_pins
@@ -12,7 +12,7 @@ class JoeSlot:
         self._scale_factor = 1
         self._speed = 1
         self._direction = 0
-    
+   
     @property
     def voltage(self):
         return self._scale_factor*self.supply_voltage
@@ -22,12 +22,14 @@ class JoeSlot:
             self._scale_factor = round((value/self.supply_voltage), 3)
         else:
             print("Cannot set higher than supply!")
-        
+
     @property
     def speed(self):
+        '''Gets speed'''
         return self._speed
     @speed.setter
     def speed(self, value):
+        '''Sets speed as pwm value.'''
         if value <= 1 and value >= 0:
             self._speed = value
             self.pwm_pin.value = self._scale_factor*value
@@ -35,23 +37,28 @@ class JoeSlot:
             print("Invalid speed.")
     @property
     def direction(self):
+        '''Get direction'''
         return self._direction
     @direction.setter
     def direction(self, value):
+        '''Sets the directional control pins.'''
         if value == 0:
             self.mcp.output(self.control_pins[0], 0)
             self.mcp.output(self.control_pins[0], 0)
+            self._direction = 0
         elif value == 1:
             self.mcp.output(self.control_pins[0], 0)
             self.mcp.output(self.control_pins[0], 1)
+            self._direction = 0
         elif value == -1:
             self.mcp.output(self.control_pins[0], 1)
             self.mcp.output(self.control_pins[0], 0)
+            self._direction = 0
         else:
             print("Invalid direction")
 
-    
-    
+
+
 
 
 class JoeBoard:
@@ -70,6 +77,10 @@ class JoeBoard:
                 supply_voltage
             ))
         self.supply_voltage = supply_voltage
+    def set_slot(self, slot, direction, speed):
+        if 0 <= slot <= 5:
+            self.slots[slot].direction = direction
+            self.slots[slot].speed = speed
+        else:
+            print("Only 6 slots.")
 
-
-        
