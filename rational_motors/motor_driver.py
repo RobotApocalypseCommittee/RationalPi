@@ -15,7 +15,7 @@ class JoeSlot:
     
     @property
     def voltage(self):
-        return self._scale_factor*supply_voltage
+        return self._scale_factor*self.supply_voltage
     @voltage.setter
     def voltage(self, value):
         if value <= self.supply_voltage:
@@ -38,13 +38,13 @@ class JoeSlot:
         return self._direction
     @direction.setter
     def direction(self, value):
-        if direction == 0:
+        if value == 0:
             self.mcp.output(self.control_pins[0], 0)
             self.mcp.output(self.control_pins[0], 0)
-        elif direction == 1:
+        elif value == 1:
             self.mcp.output(self.control_pins[0], 0)
             self.mcp.output(self.control_pins[0], 1)
-        elif direction == -1:
+        elif value == -1:
             self.mcp.output(self.control_pins[0], 1)
             self.mcp.output(self.control_pins[0], 0)
         else:
