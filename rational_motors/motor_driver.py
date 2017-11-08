@@ -2,7 +2,7 @@ from gpiozero import PWMOutputDevice
 from rational_motors.mcp23017 import MCP23017
 
 class JoeSlot:
-    def __init__(self, mcp:MCP23017, pwm_pin, control_pins, supply_voltage):
+    def __init__(self, pwm_pin, control_pins, supply_voltage, mcp=MCP23017):
         self.mcp = mcp
         self.supply_voltage = supply_voltage
         self.control_pins = control_pins
@@ -63,11 +63,11 @@ class JoeBoard:
         self.pins = MCP23017()
         self.slots = []
         for pin_set in self.PINS:
-            self.slots.append(JoeSlot(
-                self.pins, 
+            self.slots.append(JoeSlot( 
                 pin_set[0], 
                 pin_set[1:], 
-                supply_voltage
+                supply_voltage,
+                self.pins
             ))
         self.supply_voltage = supply_voltage
 
