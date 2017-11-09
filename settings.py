@@ -5,6 +5,7 @@ try:
 except ImportError:
     pass
 
+from serial.serialutil import SerialException
 import cv2
 
 from fingerprint_scanner import FingerprintScanner
@@ -27,6 +28,9 @@ try:
 except (NameError, AttributeError):
     print("Could not load CV2, Prepare for errors...")
 
-FINGERPRINT_SENSOR = FingerprintScanner(SYSTEM_DATA['deviceName'])
+try:
+    FINGERPRINT_SENSOR = FingerprintScanner(SYSTEM_DATA['deviceName'])
+except SerialException:
+    FINGERPRINT_SENSOR = None
 
 TRAINED_FILES = []
