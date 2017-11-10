@@ -187,7 +187,6 @@ class FingerprintScanner:
             if resp.ok:
                 raise FingerprintException('Cannot generate error for a command that succeeded!')
 
-            
             fatal = self.errors[resp.parameter][1]
             
             error = self.errors[resp.parameter][0]
