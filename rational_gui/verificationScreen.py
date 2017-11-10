@@ -45,7 +45,7 @@ class VerificationScreen(Page):
 
         #take photo image
         try:
-            take_photo_button = tk.Button(self, command=tkinter_funcs.login_button_func, image=self.take_photo_img, bg="blue", activebackground="red", bd=0)
+            take_photo_button = tk.Button(self, command=tkinter_funcs.login_button_func, highlightthickness=0, image=self.take_photo_img, bg="blue", activebackground="red", bd=0)
         except NameError:
-            take_photo_button = tk.Button(self, command=lambda: CONTROLLER.show_page("HudScreen") , image=self.take_photo_img, bg="black", activebackground="black", bd=0)
+            take_photo_button = tk.Button(self, command=lambda: CONTROLLER.show_page("HudScreen"), highlightthickness=0, image=self.take_photo_img, bg="black", activebackground="black", bd=0)
         take_photo_button.place(x=350, y=368)

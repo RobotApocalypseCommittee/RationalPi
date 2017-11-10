@@ -28,7 +28,7 @@ class LockedScreen(Page):
         bg_lbl.place(x=-2, y=-2)
 
         #submit button things
-        submit_button = tk.Button(self, image=lockedButton, command=lambda: CONTROLLER.show_page("VerificationScreen"), bg="black", activebackground="black", bd=0)
+        submit_button = tk.Button(self, image=lockedButton, command=lambda: CONTROLLER.show_page("VerificationScreen"), bg="black", activebackground="black", bd=0, highlightthickness=0)
         submit_button.image = lockedButton
         submit_button.grid(row=1, column=1, padx=326, pady=151)
         
