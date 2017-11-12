@@ -45,16 +45,16 @@ class JoeSlot:
         '''Sets the directional control pins.'''
         if value == 0:
             self.mcp.output(self.control_pins[0], 0)
-            self.mcp.output(self.control_pins[0], 0)
+            self.mcp.output(self.control_pins[1], 0)
             self._direction = 0
         elif value == 1:
             self.mcp.output(self.control_pins[0], 0)
-            self.mcp.output(self.control_pins[0], 1)
-            self._direction = 0
+            self.mcp.output(self.control_pins[1], 1)
+            self._direction = 1
         elif value == -1:
             self.mcp.output(self.control_pins[0], 1)
-            self.mcp.output(self.control_pins[0], 0)
-            self._direction = 0
+            self.mcp.output(self.control_pins[1], 0)
+            self._direction = -1
         else:
             print("Invalid direction")
 
