@@ -1,5 +1,6 @@
 from gpiozero import PWMOutputDevice
 from rational_motors.mcp23017 import MCP23017
+import time
 
 class JoeSlot:
     def __init__(self, mcp: MCP23017, pwm_pin, control_pins, supply_voltage):
@@ -66,7 +67,8 @@ class JoeBoard:
     BACKWARD = -1
     STOPPED = 0
     PINS = [(4, 0, 1), (17, 2, 3), (18, 5, 4), (22, 6, 7), (23, 8, 9), (24, 10, 11)]
-    def __init__(self, supply_voltage):
+    STEPPER_STEPS = [[1, 1], [-1, 1], [-1, -1], [1, -1]]
+    def __init__(self, supply_voltage, stepper_delay=1000):
         self.pins = MCP23017()
         self.slots = []
         for pin_set in self.PINS:
@@ -77,10 +79,66 @@ class JoeBoard:
                 supply_voltage
             ))
         self.supply_voltage = supply_voltage
+        self.motors = []
+        self.steppers = []
+        self.delay = stepper_delay
+
+    @property
+    def used_slots(self):
+        used = self.motors
+        for stepper in self.steppers:
+            used.extend(stepper)
+        return used
+
     def set_slot(self, slot, direction, speed):
         if 0 <= slot <= 5:
             self.slots[slot].direction = direction
             self.slots[slot].speed = speed
         else:
             print("Only 6 slots.")
+
+    def add_motor(self, slot, voltage=None):
+        if 0 <= slot <= 5 and slot not in self.used_slots:
+            if voltage:
+                self.slots[slot].voltage = voltage
+            self.motors.append(slot)
+
+    def set_motor(self, mot_no, direction, speed):
+        slot = self.motors[mot_no]
+        self.slots[slot].speed = speed
+        self.slots[slot].direction = direction
+
+    def add_stepper(self, slot1, slot2, voltage=None):
+        if not (0 <= slot1 <= 5 and slot1 not in self.used_slots):
+            print("Slot1 is invalid")
+            return
+        if not (0 <= slot2 <= 5 and slot2 not in self.used_slots):
+            print("Slot2 is invalid")
+            return
+        if slot1 == slot2:
+            print("Needs different slots!")
+            return
+        if voltage:
+            self.slots[slot1].voltage = voltage
+            self.slots[slot2].voltage = voltage
+        self.steppers.append([slot1, slot2])
+    
+    def _set_stepper_step(self, stepper, step):
+        stepslots  = self.steppers[stepper]
+        for i in range(2):
+            self.slots[stepslots[i]] = step[i]
+
+    def step_stepper(self, stepper, times=1):
+        if not (len(self.steppers) > stepper):
+            print("That isnt a stepper.")
+        for _ in range(times):
+            for i in range(4):
+                self._set_stepper_step(stepper, self.STEPPER_STEPS[i])
+                time.sleep(self.delay/1000)
+
+    
+
+
+    
+
 
