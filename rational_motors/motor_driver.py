@@ -118,7 +118,7 @@ class JoeBoard:
 
     def add_motor(self, slot, voltage=None):
         if 0 <= slot <= 5 and slot not in self.used_slots:
-            self.init_slot(slot, pwm)
+            self.init_slot(slot, True)
             if voltage:
                 self.slots[slot].voltage = voltage
             self.motors.append(slot)
