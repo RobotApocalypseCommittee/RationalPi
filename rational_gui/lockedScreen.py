@@ -4,11 +4,6 @@ from rational_gui.controller import CONTROLLER
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 
-try:
-    import tkinter_funcs
-except ImportError:
-    pass
-
 #locked screen class
 class LockedScreen(Page):
     def __init__(self, parent):

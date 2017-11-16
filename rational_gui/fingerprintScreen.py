@@ -5,7 +5,11 @@ import tkinter.font
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 from rational_gui.controller import CONTROLLER
-from tkinter_funcs import fingerprint_verif_func
+try:
+    from tkinter_funcs import fingerprint_verif_func
+except ImportError:
+    fingerprint_verif_func = print
+    pass
 
 
 class FingerprintScreen(Page):
