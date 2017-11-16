@@ -21,5 +21,5 @@ class SavedDict(dict):
         with open(self._filename, 'w') as f:
             json.dump(self, f)
 
-    def __del__(self):
-        self.save()
+    #def __del__(self):
+    #    self.save()
