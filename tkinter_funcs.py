@@ -24,8 +24,11 @@ def fingerprint_verif_func(user):
 
     if verif:
         CONTROLLER.show_page("HudScreen", user)
+    elif verif is None:
+        CONTROLLER.after(500, fingerprint_verif_func)
     else:
-        CONTROLLER.show_page("LockedScreen", {'notification':'Login attempt failed, please try again. View the help page for more info.'})
+        CONTROLLER.show_page("LockedScreen",
+                             {'notification':'Login attempt failed, please try again. View the help page for more info.'})
 
 # /////////////////////////////// #
 # Functions for registering users #

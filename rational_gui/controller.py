@@ -28,6 +28,7 @@ class Controller(tk.Tk):
         # will be raised above the others
         self.container = tk.Frame(self)
         self.container.pack(side="top", fill="both", expand=True)
+        self.container.bind("a", lambda e: self.show_page("adminScreen")) # TODO create admin screen
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 

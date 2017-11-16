@@ -154,7 +154,7 @@ class FingerprintScanner:
     def verify_person(self, userId):
         self.change_led(True, False)
 
-        while not self.is_finger_pressed(): time.sleep(0.1)
+        if not self.is_finger_pressed(): break
 
         self.capture_finger()
         resp = self._do_command(Command.VERIFY, userId)
