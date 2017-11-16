@@ -1,13 +1,18 @@
-from gpiozero import PWMOutputDevice
+from gpiozero import PWMOutputDevice, DigitalOutputDevice
 from rational_motors.mcp23017 import MCP23017
 import time
 
 class JoeSlot:
-    def __init__(self, mcp: MCP23017, pwm_pin, control_pins, supply_voltage):
+    def __init__(self, mcp: MCP23017, pwm_pin, control_pins, supply_voltage, pwm=True):
         self.mcp = mcp
         self.supply_voltage = supply_voltage
         self.control_pins = control_pins
-        self.pwm_pin = PWMOutputDevice(pwm_pin)
+        self.pwm = pwm
+        if self.pwm:
+            self.pwm_pin = PWMOutputDevice(pwm_pin)
+        else:
+            self.pwm_pin = DigitalOutputDevice(pwm_pin)
+            self.pwm_pin.on()
         self.mcp.setup(self.control_pins[0], 0)
         self.mcp.setup(self.control_pins[1], 0)
         self._scale_factor = 1
@@ -19,10 +24,13 @@ class JoeSlot:
         return self._scale_factor*self.supply_voltage
     @voltage.setter
     def voltage(self, value):
-        if value <= self.supply_voltage:
-            self._scale_factor = round((value/self.supply_voltage), 3)
+        if self.pwm:
+            if value <= self.supply_voltage:
+                self._scale_factor = round((value/self.supply_voltage), 3)
+            else:
+                print("Cannot set higher than supply!")
         else:
-            print("Cannot set higher than supply!")
+            print("Can't set speed for non-pwm pin.")
 
     @property
     def speed(self):
@@ -31,11 +39,14 @@ class JoeSlot:
     @speed.setter
     def speed(self, value):
         '''Sets speed as pwm value.'''
-        if value <= 1 and value >= 0:
-            self._speed = value
-            self.pwm_pin.value = self._scale_factor*value
+        if self.pwm:
+            if value <= 1 and value >= 0:
+                self._speed = value
+                self.pwm_pin.value = self._scale_factor*value
+            else:
+                print("Invalid speed.")
         else:
-            print("Invalid speed.")
+            print("Can't set speed for non-pwm pin.")
     @property
     def direction(self):
         '''Get direction'''
@@ -70,14 +81,7 @@ class JoeBoard:
     STEPPER_STEPS = [[1, 1], [-1, 1], [-1, -1], [1, -1]]
     def __init__(self, supply_voltage, stepper_delay=1000):
         self.pins = MCP23017()
-        self.slots = []
-        for pin_set in self.PINS:
-            self.slots.append(JoeSlot(
-                self.pins, 
-                pin_set[0], 
-                pin_set[1:], 
-                supply_voltage
-            ))
+        self.slots = [None, None, None, None, None, None]
         self.supply_voltage = supply_voltage
         self.motors = []
         self.steppers = []
@@ -90,15 +94,31 @@ class JoeBoard:
             used.extend(stepper)
         return used
 
-    def set_slot(self, slot, direction, speed):
-        if 0 <= slot <= 5:
+    def set_pwm_slot(self, slot, direction, speed):
+        if 0 <= slot <= 5 and self.slots[slot] and self.slots[slot].pwm:
             self.slots[slot].direction = direction
             self.slots[slot].speed = speed
         else:
-            print("Only 6 slots.")
+            print("Invalid Slot for PWM slot change.")
+
+    def set_slot(self, slot, direction):
+        if 0 <= slot <= 5 and self.slots[slot] and not self.slots[slot].pwm:
+            self.slots[slot].direction = direction
+        else:
+            print("Invalid Slot for non PWM slot change.")
+
+    def init_slot(self, slot, pwm=True):
+        self.slots[slot] = JoeSlot(
+            self.pins,
+            self.PINS[slot][0],
+            self.PINS[slot][1:],
+            self.supply_voltage,
+            pwm
+        )
 
     def add_motor(self, slot, voltage=None):
         if 0 <= slot <= 5 and slot not in self.used_slots:
+            self.init_slot(slot, pwm)
             if voltage:
                 self.slots[slot].voltage = voltage
             self.motors.append(slot)
@@ -108,7 +128,7 @@ class JoeBoard:
         self.slots[slot].speed = speed
         self.slots[slot].direction = direction
 
-    def add_stepper(self, slot1, slot2, voltage=None):
+    def add_stepper(self, slot1, slot2):
         if not (0 <= slot1 <= 5 and slot1 not in self.used_slots):
             print("Slot1 is invalid")
             return
@@ -118,15 +138,14 @@ class JoeBoard:
         if slot1 == slot2:
             print("Needs different slots!")
             return
-        if voltage:
-            self.slots[slot1].voltage = voltage
-            self.slots[slot2].voltage = voltage
+        self.init_slot(slot1, False)
+        self.init_slot(slot2, False)
         self.steppers.append([slot1, slot2])
     
     def _set_stepper_step(self, stepper, step):
         stepslots  = self.steppers[stepper]
         for i in range(2):
-            self.slots[stepslots[i]] = step[i]
+            self.set_slot(stepslots[i], step[i])
 
     def step_stepper(self, stepper, times=1):
         if not (len(self.steppers) > stepper):
