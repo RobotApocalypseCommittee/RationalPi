@@ -1,6 +1,6 @@
 import time
 
-from settings import SYSTEM_DATA, FINGERPRINT_SENSOR
+from settings import SYSTEM_DATA, FINGERPRINT_SENSOR, REGISTER_QUEUE
 from rational_gui.controller import CONTROLLER
 
 import authenticate
@@ -39,6 +39,7 @@ def register_user(newUserName):
     newUser = next(a for a, b in enumerate(sorted(list(SYSTEM_DATA['userDict'].keys())), 1) if a != b)
 
     if newUser > 20 or newUserName in SYSTEM_DATA['userDict'].values() or newUserName == "":
+        REGISTER_QUEUE.put(False)
         return False
 
     SYSTEM_DATA['userDict'][newUser] = newUserName
@@ -61,4 +62,5 @@ def register_user(newUserName):
 
     tools.update() # retrain
 
+    REGISTER_QUEUE.put(True)
     return True

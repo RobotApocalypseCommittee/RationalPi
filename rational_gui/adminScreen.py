@@ -1,7 +1,11 @@
 import tkinter as tk
+import threading
+import queue
 
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
+from controller import CONTROLLER
+from settings import REGISTER_QUEUE
 
 try:
     import tkinter_funcs
@@ -41,18 +45,23 @@ class AdminScreen(Page):
         print("Admin screen opened")
 
     def handleRegister(self):
-        resp = tkinter_funcs.register_user(self.name_strvar.get())
-        if not resp:
-            errorRoot = tk.Tk()
-            errorRoot.wm_title('Error')
+        name = self.name_strvar.get()
 
-            errorFrame = tk.Frame(errorRoot)
-            errorFrame.pack()
+        registerThread = threading.Thread(None, lambda name=name: tkinter_funcs.register_user(name))
+        registerThread.start()
 
-            errorLabel = tk.Label(errorFrame, text="Error, registering failed", fg='red')
-            errorLabel.grid(row=0, column=0)
+        self.checkFinish(registerThread)
+        
+    def checkFinish(self, thread):
+        if thread.is_alive():
+            CONTROLLER.after(500, lambda thread=thread: self.checkFinish(thread))
+        else:
+            try:
+                resp = REGISTER_QUEUE.get(block=False)
+            except queue.Empty:
+                resp = False
 
-            errorButton = tk.Button(errorFrame, text='Ok', command=errorRoot.destroy)
-            errorButton.grid(row=1, column=0)
+            if not resp:
+                print("WARNING, REGISTRATION SOMEHOW FAILED")
 
-            errorRoot.mainloop()
+            CONTROLLER.show_page("LockedScreen")
