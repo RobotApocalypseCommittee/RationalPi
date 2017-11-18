@@ -147,11 +147,13 @@ class JoeBoard:
         for i in range(2):
             self.set_slot(stepslots[i], step[i])
 
-    def step_stepper(self, stepper, times=1):
+    def step_stepper(self, stepper, times=1, direction=1):
+        if not (direction is 1 or direction is -1):
+            print("Bad Direction")
         if not (len(self.steppers) > stepper):
             print("That isnt a stepper.")
         for _ in range(times):
-            for i in range(4):
+            for i in range(0, 4, direction):
                 self._set_stepper_step(stepper, self.STEPPER_STEPS[i])
                 time.sleep(self.delay/1000)
 
