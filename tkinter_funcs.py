@@ -1,6 +1,6 @@
 import time
 
-from settings import SYSTEM_DATA, FINGERPRINT_SENSOR, REGISTER_QUEUE
+from settings import SYSTEM_DATA, FINGERPRINT_SENSOR
 from rational_gui.controller import CONTROLLER
 
 import authenticate
@@ -35,7 +35,7 @@ def fingerprint_verif_func(user):
 # Functions for registering users #
 # /////////////////////////////// #
 
-def register_user(newUserName):
+def register_user(newUserName, REGISTER_QUEUE):
     newUser = next(a for a, b in enumerate(sorted(list(SYSTEM_DATA['userDict'].keys())), 1) if a != b)
 
     if newUser > 20 or newUserName in SYSTEM_DATA['userDict'].values() or newUserName == "":

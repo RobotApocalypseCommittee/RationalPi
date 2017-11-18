@@ -7,7 +7,6 @@ except ImportError:
 
 from serial.serialutil import SerialException
 import cv2
-import queue
 
 from fingerprint_scanner import FingerprintScanner
 from rational_utils.data_manager import SavedDict
@@ -36,4 +35,3 @@ except SerialException:
 
 TRAINED_FILES = []
 
-REGISTER_QUEUE = queue.Queue(1)
