@@ -28,12 +28,17 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
         colorImage = cv2.imread(image_path)
         image = cv2.cvtColor(colorImage, cv2.COLOR_BGR2GRAY) # Definitely needed (for some reason)
 
-        # Get the faceId of the image
-        faceId = os.path.split(image_path)[1].split('.')[0]
-        print(faceId)
+        faces = FACE_CASCADE.detectMultiScale(grayImage, 1.4)
 
-        faceImages.append(image)
-        faceIdList.append(faceId)
+        for (x, y, w, h) in faces:
+            croppedImage = grayImage[y: y + h, x: x + w] # crops it to be only the face
+
+            # Get the faceId of the image
+            faceId = os.path.split(image_path)[1].split('.')[0]
+            print(faceId)
+
+            faceImages.append(croppedImage)
+            faceIdList.append(faceId)
 
     # return the images list and labels list
     return faceImages, faceIdList, faceFileNames
