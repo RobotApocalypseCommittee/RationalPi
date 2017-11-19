@@ -38,7 +38,7 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
             print(faceId)
 
             faceImages.append(croppedImage)
-            faceIdList.append(faceId)
+            faceIdList.append(int(faceId)
 
     # return the images list and labels list
     return faceImages, faceIdList, faceFileNames
