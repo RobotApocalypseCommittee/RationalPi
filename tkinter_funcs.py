@@ -36,7 +36,7 @@ def fingerprint_verif_func(user):
 # /////////////////////////////// #
 
 def register_user(newUserName, REGISTER_QUEUE):
-    newUser = next(a for a, b in enumerate(sorted(list(SYSTEM_DATA['userDict'].keys())), 1) if a != b)
+    newUser = [a for a, b in enumerate(sorted(list(SYSTEM_DATA['userDict'].keys())), 1) if a != b][1]
 
     if newUser > 20 or newUserName in SYSTEM_DATA['userDict'].values() or newUserName == "":
         REGISTER_QUEUE.put(False)
