@@ -29,5 +29,6 @@ class FingerprintScreen(Page):
         info_label = tk.Label(self, font=("Helvetica", 16), text="Your face has been recognised and you must now present your finger.",
             wraplength=200)
         info_label.grid(row=0, column=0, padx=500, pady=150)
-
-        CONTROLLER.after(0, fingerprint_verif_func)
+    
+    def render(self, user):
+        CONTROLLER.after(0, lambda user=user: fingerprint_verif_func(user))
