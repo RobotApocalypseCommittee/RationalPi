@@ -4,7 +4,7 @@ import queue
 
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
-from controller import CONTROLLER
+from rational_gui.controller import CONTROLLER
 
 try:
     import tkinter_funcs
@@ -33,7 +33,7 @@ class AdminScreen(Page):
         #textinput thing
         self.name_strvar = tk.StringVar()
         name_input = tk.Entry(self, width=30, textvariable=self.name_strvar)
-        name_input.grid(row=0, column=0)
+        name_input.grid(row=0, column=0, padx=280, pady=130)
 
         #register button things
         self.register_button = tk.Button(self, image=registerButtonImage, command=self.handleRegister,

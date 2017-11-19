@@ -14,5 +14,5 @@ try:
 except Exception:
     pass
 
-CONTROLLER.show_page("LockedScreen")
+CONTROLLER.show_page("AdminScreen")
 tk.mainloop()
