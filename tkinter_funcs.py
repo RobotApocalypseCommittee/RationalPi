@@ -36,7 +36,7 @@ def fingerprint_verif_func(user):
 # /////////////////////////////// #
 
 def register_user(newUserName, REGISTER_QUEUE):
-    for index, registeredUser in enumerate(sorted(list(SYSTEM_DATA['userDict'].values()):
+    for index, registeredUser in enumerate(sorted(list(SYSTEM_DATA['userDict'].values()))):
         if index+1 != registeredUser:
             newUser = index+1
             break
