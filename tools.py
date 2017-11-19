@@ -26,7 +26,7 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
 
         # get the image and grayscale it (to make the numpy array work nicely)
         colorImage = cv2.imread(image_path)
-        image = cv2.cvtColor(colorImage, cv2.COLOR_BGR2GRAY) # Definitely needed (for some reason)
+        grayimage = cv2.cvtColor(colorImage, cv2.COLOR_BGR2GRAY) # Definitely needed (for some reason)
 
         faces = FACE_CASCADE.detectMultiScale(grayImage, 1.4)
 
