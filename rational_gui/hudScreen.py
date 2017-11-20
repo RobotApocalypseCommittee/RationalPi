@@ -5,7 +5,7 @@ from rational_gui.page import Page
 from rational_gui.controller import CONTROLLER
 from settings import SYSTEM_DATA
 import cracker_tracker
-import datetime
+from datetime import datetime
 
 
 #hud class
