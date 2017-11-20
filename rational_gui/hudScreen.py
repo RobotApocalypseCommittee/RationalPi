@@ -75,9 +75,11 @@ class HudScreen(Page):
         else:
             msg+="You cannot take a cracker right now.\n"
             lastCracker = datetime.strptime(SYSTEM_DATA['userDict'][user]["lastCracker"], "%Y-%m-%dT%H:%M:%S")
-            msg += (datetime.today() - lastCracker + datetime.timedelta(hours=12))
+            s = (datetime.today() - lastCracker + datetime.timedelta(hours=12)).total_seconds()
+            msg += '{:02}:{:02}:{:02}'.format(s // 3600, s % 3600 // 60, s % 60)
 
         self.info_var.set(msg)
+        self.after(1000, self.render_message, user)
 
     def render(self, user):
         self.render_message(user)
