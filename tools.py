@@ -26,24 +26,31 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
 
         # get the image and grayscale it (to make the numpy array work nicely)
         colorImage = cv2.imread(image_path)
-        image = cv2.cvtColor(colorImage, cv2.COLOR_BGR2GRAY) # Definitely needed (for some reason)
+        grayImage = cv2.cvtColor(colorImage, cv2.COLOR_BGR2GRAY) # Definitely needed (for some reason)
 
-        # Get the faceId of the image
-        faceId = os.path.split(image_path)[1].split('.')[0]
-        print(faceId)
+        faces = FACE_CASCADE.detectMultiScale(grayImage, 1.4)
 
-        faceImages.append(image)
-        faceIdList.append(faceId)
+        for (x, y, w, h) in faces:
+            croppedImage = grayImage[y: y + h, x: x + w] # crops it to be only the face
+
+            # Get the faceId of the image
+            faceId = os.path.split(image_path)[1].split('.')[0]
+            print(faceId)
+
+            faceImages.append(croppedImage)
+            faceIdList.append(int(faceId))
 
     # return the images list and labels list
     return faceImages, faceIdList, faceFileNames
 
 def do_training(): # trains the recogniser (done at startup)
-    faceImages, faceIdList, faceFileNames = get_face_data() # gets the data
+    #faceImages, faceIdList, faceFileNames = get_face_data() # gets the data
 
-    FACE_RECOGNISER.train(faceImages, np.array(faceIdList)) # does the training
+    #FACE_RECOGNISER.train(faceImages, np.array(faceIdList)) # does the training
 
-    TRAINED_FILES.extend(faceFileNames)
+    #TRAINED_FILES.extend(faceFileNames)
+
+    FACE_RECOGNISER.read("recog.xml")
 
 def update():
     faceImages, faceIdList, faceFileNames = get_face_data() # gets the data
@@ -66,3 +73,12 @@ def save_new_image(userId, faceImage):
         highestVersion = -1
 
     Image.fromarray(faceImage).save('Face Storage\\{}.{}.jpg'.format(userId, highestVersion+1))
+
+def do_comp_training(): # trains the recogniser (done at startup)
+    faceImages, faceIdList, faceFileNames = get_face_data() # gets the data
+
+    FACE_RECOGNISER.train(faceImages, np.array(faceIdList)) # does the training
+
+    FACE_RECOGNISER.write("jimbo.xml")
+    
+    TRAINED_FILES.extend(faceFileNames)
