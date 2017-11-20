@@ -13,14 +13,14 @@ import tools
 
 def login_button_func():
     user, conf = authenticate.authenticate_face()
-
+    print("User = " + str(user) + " Conf = " + str(conf))
     if not user or conf > SYSTEM_DATA['fingerprintConf']:
-        CONTROLLER.show_page("FingerprintScreen")
+        CONTROLLER.show_page("FingerprintScreen", user)
     else:
         CONTROLLER.show_page("HudScreen", user)
 
 def fingerprint_verif_func(user):
-
+    print(user-1)
     verif = FINGERPRINT_SENSOR.verify_person(user-1)
 
     if verif:

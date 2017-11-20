@@ -44,11 +44,13 @@ def get_face_data(): # gets faces in the Face Storage folder and returns the fac
     return faceImages, faceIdList, faceFileNames
 
 def do_training(): # trains the recogniser (done at startup)
-    faceImages, faceIdList, faceFileNames = get_face_data() # gets the data
+    #faceImages, faceIdList, faceFileNames = get_face_data() # gets the data
 
-    FACE_RECOGNISER.train(faceImages, np.array(faceIdList)) # does the training
+    #FACE_RECOGNISER.train(faceImages, np.array(faceIdList)) # does the training
 
-    TRAINED_FILES.extend(faceFileNames)
+    #TRAINED_FILES.extend(faceFileNames)
+
+    FACE_RECOGNISER.read("recog.xml")
 
 def update():
     faceImages, faceIdList, faceFileNames = get_face_data() # gets the data

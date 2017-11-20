@@ -25,7 +25,7 @@ def authenticate_face(): # returns the (predicted) user id from a face (0 means 
     grayImageArray = take_login_photo() # takes the photo
 
     faceList = FACE_CASCADE.detectMultiScale(grayImageArray, 1.4) # finds the faces
-
+    print(len(faceList))
     id_list_confs = {} # starts the id dict (id:confidence)
     photo_dict = {} # starts the photo dict (id:photo array)
 
