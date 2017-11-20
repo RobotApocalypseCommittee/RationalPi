@@ -49,13 +49,6 @@ class VerificationScreen(Page):
         instructions_lbl.image = instructions
         instructions_lbl.place(x=510, y=200)
         
-
-        #take photo image
-        try:
-            take_photo_button = tk.Button(self, command=tkinter_funcs.login_button_func, highlightthickness=0, image=self.take_photo_img, bg="blue", activebackground="red", bd=0)
-        except NameError:
-            take_photo_button = tk.Button(self, command=lambda: CONTROLLER.show_page("HudScreen"), highlightthickness=0, image=self.take_photo_img, bg="black", activebackground="black", bd=0)
-        take_photo_button.place(x=350, y=368)
         self.thread_queue = queue.Queue()
 
     def on_auth_end(self):

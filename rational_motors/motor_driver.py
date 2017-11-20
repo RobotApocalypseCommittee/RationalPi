@@ -148,7 +148,7 @@ class JoeBoard:
             self.set_slot(stepslots[i], step[i])
 
     def step_stepper(self, stepper, times=1):
-        if not (len(self.steppers) > stepper):
+        if stepper >= len(self.steppers):
             print("That isnt a stepper.")
         for _ in range(times):
             for i in range(4):
