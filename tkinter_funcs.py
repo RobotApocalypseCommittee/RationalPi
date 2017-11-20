@@ -29,14 +29,20 @@ def fingerprint_verif_func(user):
 # /////////////////////////////// #
 
 def register_user(newUserName, REGISTER_QUEUE):
-    for index, registeredUser in enumerate(sorted(list(SYSTEM_DATA['userDict'].values()))):
+    for index, registeredUser in enumerate(sorted(list(SYSTEM_DATA['userDict'].keys()))):
         if index+1 != registeredUser:
             newUser = index+1
             break
 
-    if newUser > 20 or newUserName in SYSTEM_DATA['userDict'].values() or newUserName == "":
+    if newUser > 20 or newUserName == "":
         REGISTER_QUEUE.put(False)
         return False
+
+    userDicts = SYSTEM_DATA['userDict'].values()
+    for userDict in userDicts:
+        if userDict['name'] == newUserName:
+            REGISTER_QUEUE.put(False)
+            return False
 
     SYSTEM_DATA['userDict'][newUser] = newUserName
 

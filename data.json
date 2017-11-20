@@ -1,9 +1,9 @@
 {
     "userDict": {
-        "1":"Atto Allas",
-        "2":"Joe Bell",
-        "3":"Bhuvan Belur",
-        "4":"William Yu"
+        "1":{"name":"Atto Allas", "lastCracker":"2017-11-20T17:59:45"},
+        "2":{"name":"Joe Bell", "lastCracker":"2017-11-20T17:59:45"},
+        "3":{"name":"Bhuvan Belur", "lastCracker":"2017-11-20T17:59:45"},
+        "4":{"name":"William Yu", "lastCracker":"2017-11-20T17:59:45"}
     },
     "crackersLeft":"14",
 
