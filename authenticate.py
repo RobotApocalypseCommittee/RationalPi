@@ -2,10 +2,8 @@
 
 # imports!
 import time
-import random
 import numpy as np
 import cv2
-from PIL import Image
 
 from settings import SYSTEM_DATA, CAMERA, FACE_CASCADE, FACE_RECOGNISER
 import tools
