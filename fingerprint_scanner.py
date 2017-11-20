@@ -177,7 +177,7 @@ class FingerprintScanner:
         if resp.ok:
             return resp.parameter
         else:
-            return False
+            return None
 
     def print_error(self, resp=None, text=None, fatal=False):
         

@@ -77,7 +77,7 @@ class VerificationScreen(Page):
 
     def render(self):
         thread = threading.Thread(target=self.verithread)
-        thread.run()
+        thread.start()
         wait_for_thread(thread, self.on_auth_end)
 
 
