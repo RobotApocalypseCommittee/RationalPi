@@ -27,5 +27,4 @@ try:
 except SerialException:
     FINGERPRINT_SENSOR = None
 
-TRAINED_FILES = []
 
