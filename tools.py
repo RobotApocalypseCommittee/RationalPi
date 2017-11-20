@@ -71,3 +71,12 @@ def save_new_image(userId, faceImage):
         highestVersion = -1
 
     Image.fromarray(faceImage).save('Face Storage\\{}.{}.jpg'.format(userId, highestVersion+1))
+
+def do_comp_training(): # trains the recogniser (done at startup)
+    faceImages, faceIdList, faceFileNames = get_face_data() # gets the data
+
+    FACE_RECOGNISER.train(faceImages, np.array(faceIdList)) # does the training
+
+    FACE_RECOGNISER.write("jimbo.xml")
+    
+    TRAINED_FILES.extend(faceFileNames)

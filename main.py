@@ -5,7 +5,7 @@ import tools
 from rational_gui import verificationScreen, hudScreen, lockedScreen, fingerprintScreen, refillScreen, adminScreen
 from rational_gui.controller import CONTROLLER
 
-tools.do_training()
+tools.do_comp_training()
 
 CONTROLLER.add_page(verificationScreen.VerificationScreen)
 CONTROLLER.add_page(hudScreen.HudScreen)
