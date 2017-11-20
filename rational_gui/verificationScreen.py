@@ -53,11 +53,9 @@ class VerificationScreen(Page):
 
     def on_auth_end(self):
         result = self.thread_queue.get()
-        if not result:
-            CONTROLLER.show_page("FingerprintScreen")
-        else:
-            CONTROLLER.show_page("HudScreen", result)
 
+        CONTROLLER.show_page("FingerprintScreen", result)
+        
     def verithread(self):
         for i in range(5, 0, -1):
             self.instruction_text.set("Photo taken in "+ str(i) + " seconds.")

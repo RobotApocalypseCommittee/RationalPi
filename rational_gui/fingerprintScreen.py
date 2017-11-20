@@ -37,14 +37,22 @@ class FingerprintScreen(Page):
             CONTROLLER.show_page("HudScreen", result)
 
     def verithread(self):
-        success, user = authenticate.authenticate_finger()
-        if success:
-            self.thread_queue.put(user)
+        if self.user:
+            success = authenticate.verif_finger(self.user)
+            if success:
+                self.thread_queue.put(self.user)
+            else:
+                self.thread_queue.put(False)
         else:
-            self.thread_queue.put(False)
+            success, user = authenticate.authenticate_finger()
+            if success:
+                self.thread_queue.put(user)
+            else:
+                self.thread_queue.put(False)
 
 
-    def render(self):
+    def render(self, data=False):
+        self.user = data
         self.thread_queue = queue.Queue()
         thread = threading.Thread(target=self.verithread)
         thread.start()
