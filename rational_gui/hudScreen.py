@@ -3,6 +3,9 @@ import tkinter as tk
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 from rational_gui.controller import CONTROLLER
+from settings import SYSTEM_DATA
+import cracker_tracker
+import datetime
 
 
 #hud class
@@ -17,7 +20,7 @@ class HudScreen(Page):
 
         hudBg = tk.PhotoImage(file=get_imagepath("hudBg"))
         cracker_holder = tk.PhotoImage(file=get_imagepath("crackerHolder"))
-        cracker = tk.PhotoImage(file=get_imagepath("cracker2"))
+        self.crackerimg = tk.PhotoImage(file=get_imagepath("cracker2"))
         realCracker = tk.PhotoImage(file=get_imagepath("crackerImg"))
         refillIcon = tk.PhotoImage(file=get_imagepath("refill"))
         lockIco = tk.PhotoImage(file=get_imagepath("lockIco"))
@@ -38,7 +41,8 @@ class HudScreen(Page):
         person_lbl.place(x=360, y=30)
 
         #info label
-        info = tk.Label(self, text="You have x crackers left today!", bg="black", foreground="white")
+        self.info_var = tk.StringVar()
+        info = tk.Label(self, textvariable=self.info_var, bg="black", foreground="white")
         info.place(x=320, y=420)
 
         #lock button stuff
@@ -64,11 +68,22 @@ class HudScreen(Page):
         person_lbl.image = cracker_holder
         person_lbl.place(x=20, y=30)
 
+    def render_message(self, user):
+        msg = "Welcome, {}.\n".format(SYSTEM_DATA['userDict'][user]["name"])
+        if cracker_tracker.can_dispense_cracker(user):
+            msg+="You can take a cracker."
+        else:
+            msg+="You cannot take a cracker right now.\n"
+            lastCracker = datetime.strptime(SYSTEM_DATA['userDict'][user]["lastCracker"], "%Y-%m-%dT%H:%M:%S")
+            msg += (datetime.today() - lastCracker + datetime.timedelta(hours=12))
+
+        self.info_var.set(msg)
+
+    def render(self, user):
+        self.render_message(user)
         #temporary variable so you can see that it still works with less crackers (try changing it)
-        cracker_count = 14
         cry = 348
-        for i in range(cracker_count):
-            crackers = tk.Label(self, image=cracker, bd=0)
-            crackers.image = cracker
+        for i in range(SYSTEM_DATA['crackersLeft']):
+            crackers = tk.Label(self, image=self.crackerimg, bd=0)
             crackers.place(x=35, y=cry)
             cry -= 23
