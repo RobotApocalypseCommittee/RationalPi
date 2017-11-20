@@ -3,7 +3,7 @@ from datetime import datetime
 
 from settings import SYSTEM_DATA
 
-def dispense_cracker(user):
+def can_dispense_cracker(user):
     '''Main command for dispensing a cracker'''
 
     if SYSTEM_DATA['crackersLeft'] == 0:
