@@ -3,6 +3,10 @@ import tkinter as tk
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 from rational_gui.controller import CONTROLLER
+import authenticate
+import queue
+import threading
+from rational_utils.thread_tools import wait_for_thread
 
 try:
     import tkinter_funcs
@@ -34,14 +38,17 @@ class VerificationScreen(Page):
         place_face_here.place(x=10, y=170)
 
         #picam placeholder image
-        placeholder_lbl = tk.Label(self, image=placeholder, borderwidth=0)
-        placeholder_lbl.image = placeholder
+        self.instruction_text = tk.StringVar()
+        self.instruction_text.set("Get Ready for Photo")
+        placeholder_lbl = tk.Label(self, textvariable=self.instruction_text, borderwidth=0)
+
         placeholder_lbl.place(x=304, y=170)
 
         #instructions image
         instructions_lbl = tk.Label(self, image=instructions, borderwidth=0)
         instructions_lbl.image = instructions
         instructions_lbl.place(x=510, y=200)
+        
 
         #take photo image
         try:
@@ -49,3 +56,28 @@ class VerificationScreen(Page):
         except NameError:
             take_photo_button = tk.Button(self, command=lambda: CONTROLLER.show_page("HudScreen"), highlightthickness=0, image=self.take_photo_img, bg="black", activebackground="black", bd=0)
         take_photo_button.place(x=350, y=368)
+        self.thread_queue = queue.Queue()
+
+    def on_auth_end(self):
+        result = self.thread_queue.get()
+        if not result:
+            CONTROLLER.show_page("FingerprintScreen")
+        else:
+            CONTROLLER.show_page("HudScreen", result)
+
+    def verithread(self):
+        for i in range(5, 0, -1):
+            self.instruction_text.set("Photo taken in "+ str(i) + " seconds.")
+        success, user = authenticate.authenticate_face()
+        if success:
+            self.thread_queue.put(user)
+        else:
+            self.thread_queue.put(False)
+
+
+    def render(self):
+        thread = threading.Thread(target=self.verithread)
+        thread.run()
+        wait_for_thread(thread, self.on_auth_end)
+
+
