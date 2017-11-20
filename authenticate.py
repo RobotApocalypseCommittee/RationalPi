@@ -2,9 +2,10 @@
 
 # imports!
 import time
-
+import random
 import numpy as np
 import cv2
+from PIL import Image
 
 from settings import SYSTEM_DATA, CAMERA, FACE_CASCADE, FACE_RECOGNISER
 import tools
@@ -25,7 +26,7 @@ def authenticate_face(): # returns the (predicted) user id from a face (0 means 
     grayImageArray = take_login_photo() # takes the photo
 
     faceList = FACE_CASCADE.detectMultiScale(grayImageArray, 1.4) # finds the faces
-    print(len(faceList))
+
     id_list_confs = {} # starts the id dict (id:confidence)
     photo_dict = {} # starts the photo dict (id:photo array)
 
