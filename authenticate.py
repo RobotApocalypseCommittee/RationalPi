@@ -15,3 +15,8 @@ def authenticate_finger():
         return False, None
     else:
         return True, resp+1
+
+def verif_finger(user):
+    resp = FINGERPRINT_SENSOR.verify_person(user-1)
+    
+    return resp
