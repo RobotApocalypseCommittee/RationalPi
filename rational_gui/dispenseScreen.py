@@ -1,4 +1,5 @@
 import tkinter as tk
+import threading
 
 from rational_gui.controller import CONTROLLER
 from rational_gui.images import get_imagepath
