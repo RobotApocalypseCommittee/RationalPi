@@ -82,7 +82,7 @@ class FingerprintScanner:
             if (response.ok):
                 return response
             else:
-                self.print_error(response)
+                self.print_error(resp=response)
 
                 return response
 
@@ -179,20 +179,25 @@ class FingerprintScanner:
         if resp.ok:
             return resp.parameter
         else:
-            return False
+            return None
 
     def print_error(self, resp=None, text=None, fatal=False):
+        
+        print()
         
         if text != None:
             error = text
         else:
             if resp.ok:
                 raise FingerprintException('Cannot generate error for a command that succeeded!')
-
-            fatal = self.errors[resp.parameter][1]
             
-            error = self.errors[resp.parameter][0]
-        
+            try:
+                fatal = self.errors[resp.parameter][1]
+                error = self.errors[resp.parameter][0]
+            except KeyError:
+                print("An unknown error occurred")
+                return
+            
         if fatal:
             raise FingerprintException(error)
         else:

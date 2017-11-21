@@ -3,6 +3,8 @@ import tkinter as tk
 import tkinter.font
 
 class Controller(tk.Tk):
+    padding=3
+    dimensions="{0}x{1}+0+0"
     def __init__(self, fullscreen=False, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
@@ -13,9 +15,12 @@ class Controller(tk.Tk):
         self.geometry('{}x{}'.format(800, 480))
         self.configure(background='white')
         if fullscreen:
-            self.overrideredirect(True)
-            self.overrideredirect(False)
-            self.attributes('-fullscreen',True)
+            self.wm_attributes('-fullscreen','true')
+            width=self.winfo_screenwidth()-self.padding
+            height=self.winfo_screenheight()-self.padding
+            self.geometry(self.dimensions.format(width, height))
+        else:
+            self.geometry('{}x{}'.format(800, 460))
         
 
         # the container is where we'll stack a bunch of frames
@@ -23,6 +28,7 @@ class Controller(tk.Tk):
         # will be raised above the others
         self.container = tk.Frame(self)
         self.container.pack(side="top", fill="both", expand=True)
+        self.container.bind("a", lambda e: self.show_page("AdminScreen")) # TODO create admin screen
         self.container.grid_rowconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
 

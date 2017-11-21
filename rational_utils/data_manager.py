@@ -23,9 +23,15 @@ class SavedDict(dict):
         
         self['userDict'] = {int(key):val for key, val in self['userDict'].items()}
 
+        for key, val in self.items():
+            try:
+                self[key] = int(val)
+            except Exception:
+                pass
+
     def save(self):
         with open(self._filename, 'w') as f:
             json.dump(self, f)
 
-    def __del__(self):
-        self.save()
+    #def __del__(self):
+    #    self.save()

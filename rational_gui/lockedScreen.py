@@ -4,11 +4,6 @@ from rational_gui.controller import CONTROLLER
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 
-try:
-    import tkinter_funcs
-except ImportError:
-    pass
-
 #locked screen class
 class LockedScreen(Page):
     def __init__(self, parent):
@@ -28,7 +23,7 @@ class LockedScreen(Page):
         bg_lbl.place(x=-2, y=-2)
 
         #submit button things
-        submit_button = tk.Button(self, image=lockedButton, command=lambda: CONTROLLER.show_page("VerificationScreen"), bg="black", activebackground="black", bd=0)
+        submit_button = tk.Button(self, image=lockedButton, command=lambda: CONTROLLER.show_page("VerificationScreen"), bg="black", activebackground="black", bd=0, highlightthickness=0)
         submit_button.image = lockedButton
         submit_button.grid(row=1, column=1, padx=326, pady=151)
         
