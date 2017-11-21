@@ -4,13 +4,12 @@ from settings import SYSTEM_DATA, FINGERPRINT_SENSOR
 def authenticate_face():
     user, conf = FACE_MANAGER.authenticate()
     print("User = " + str(user) + " Conf = " + str(conf))
-    if not user or conf > SYSTEM_DATA['fingerprintConf']:
+    if not user:
         return False, None
+    elif conf > SYSTEM_DATA['fingerprintConf']:
+        return False, user
     else:
-        if conf < SYSTEM_DATA['authConf']:
-            return True, user
-        else:
-            return False, user
+        return True, user
 
 def authenticate_finger():
     resp = FINGERPRINT_SENSOR.identify_person()
