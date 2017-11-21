@@ -48,7 +48,8 @@ class VerificationScreen(Page):
         self.thread_queue = queue.Queue()
 
     def on_auth_end(self):
-        (success, user) = self.thread_queue.get()
+        success = self.thread_queue.get()
+        user = self.thread_queue.get()
         if success:
             CONTROLLER.show_page("HudScreen", user)
         else:
@@ -59,7 +60,8 @@ class VerificationScreen(Page):
             self.instruction_text.set("Photo taken in "+ str(i) + " seconds.")
             time.sleep(1)
         success, user = authenticate.authenticate_face()
-        self.thread_queue.put((success, user))
+        self.thread_queue.put(success)
+        self.thread_queue.put(user)
 
 
     def render(self, data=False):
