@@ -5,6 +5,7 @@ from rational_gui.controller import CONTROLLER
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 from cracker_controller import CHOREOGRAPHER
+from rational_utils.thread_tools import wait_for_thread
 
 #dispense screen class
 class DispenseScreen(Page):
