@@ -24,7 +24,8 @@ class FaceManager:
         try:
             self.camera = PiCamera()
             self.camera.rotation = 180
-        except (NameError, PiCameraError):
+        except (NameError, PiCameraError) as e:
+            print("CAMERA ERROR: " + e)
             pass
 
         # inits misc stuff for authentication
