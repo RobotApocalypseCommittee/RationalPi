@@ -18,16 +18,21 @@ class FingerprintScreen(Page):
         self.grid()
 
 
-        verificationBg = tk.PhotoImage(file=get_imagepath("verificationBg"))
+        verificationBg = tk.PhotoImage(file=get_imagepath("verificationBg2"))
+
 
         #background things
         bg_lbl = tk.Label(self, image=verificationBg)
         bg_lbl.image = verificationBg
         bg_lbl.place(x=0, y=0)
-        info_label = tk.Label(self, font=("Helvetica", 16), 
-            text="Sorry, we could not recognise your face, please now try the fingerprint.",
-            wraplength=200)
-        info_label.grid(row=0, column=0, padx=500, pady=150)
+
+
+        retry_button = tk.Button(self, text="Retry", bg="black", activebackground="black", fg="white", command=lambda: CONTROLLER.show_page("VerificationScreen"))
+        retry_button.place(x=20, y=20)
+
+        back_button = tk.Button(self, text="Back", bg="black", activebackground="black", fg="white", command=lambda: CONTROLLER.show_page("LockScreen"))
+        back_button.place(x=760, y=20)
+        
     
     def on_auth_end(self):
         result = self.thread_queue.get()
