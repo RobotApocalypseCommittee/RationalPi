@@ -21,7 +21,7 @@ class VerificationScreen(Page):
         self.grid()
 
         verificationBg = tk.PhotoImage(file=get_imagepath("verificationBg"))
-        face_outline = tk.PhotoImage(file=get_imagepath("positionFace"))
+        face_outline = tk.PhotoImage(file=get_imagepath("examplePosition"))
         placeholder = tk.PhotoImage(file=get_imagepath("placeholder"))
         instructions = tk.PhotoImage(file=get_imagepath("plspositionboi"))
         
@@ -35,7 +35,7 @@ class VerificationScreen(Page):
         #face guidance image
         place_face_here = tk.Label(self, image=face_outline, borderwidth=0)
         place_face_here.image = face_outline
-        place_face_here.place(x=10, y=170)
+        place_face_here.place(x=20, y=200)
 
         #picam placeholder image
         self.instruction_text = tk.StringVar()

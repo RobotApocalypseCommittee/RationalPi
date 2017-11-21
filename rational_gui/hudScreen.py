@@ -53,7 +53,7 @@ class HudScreen(Page):
 
         #dispense button stuff
         realCracker = realCracker.subsample(4, 4)
-        dispense_button = tk.Button(self, image=realCracker, bg="black", activebackground="black", fg="white")
+        dispense_button = tk.Button(self, image=realCracker, bg="black", command=lambda: CONTROLLER.show_page("DispenseScreen"), activebackground="black", fg="white")
         dispense_button.image = realCracker
         dispense_button.place(x=370, y=245)
 
