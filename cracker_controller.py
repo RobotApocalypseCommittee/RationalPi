@@ -8,7 +8,7 @@ class Choreographer:
     CONVEYOR_SCALE = 1
     POUR_STEPS = 125
     def __init__(self):
-        self.board = JoeBoard(6, 1000)
+        self.board = JoeBoard(6)
         self.is_pouring = False
         self.board.add_stepper(0, 1)
         self.board.add_stepper(2, 3)
