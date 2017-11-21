@@ -117,7 +117,9 @@ class FingerprintScanner:
         next_id = 20
 
         for i in range(20):
-            if not self._do_command(Command.CHECK_ENROLLED, i).ok:
+            try:
+                self._do_command(Command.CHECK_ENROLLED, i)
+            except FingerprintException:
                 next_id = i
                 break
 
