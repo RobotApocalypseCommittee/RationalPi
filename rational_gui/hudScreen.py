@@ -17,7 +17,7 @@ class HudScreen(Page):
         self.height = 480
         self.grid()
         crackers = {}
-
+        self.user = None
         hudBg = tk.PhotoImage(file=get_imagepath("hudBg"))
         cracker_holder = tk.PhotoImage(file=get_imagepath("crackerHolder"))
         self.crackerimg = tk.PhotoImage(file=get_imagepath("cracker2"))
@@ -53,9 +53,9 @@ class HudScreen(Page):
 
         #dispense button stuff
         realCracker = realCracker.subsample(4, 4)
-        dispense_button = tk.Button(self, image=realCracker, bg="black", command=lambda: CONTROLLER.show_page("DispenseScreen"), activebackground="black", fg="white")
-        dispense_button.image = realCracker
-        dispense_button.place(x=370, y=245)
+        self.dispense_button = tk.Button(self, image=realCracker, bg="black", command=lambda: CONTROLLER.show_page("DispenseScreen"), activebackground="black", fg="white")
+        self.dispense_button.image = realCracker
+        self.dispense_button.place(x=370, y=245)
 
         #refill button things
         refillIcon = refillIcon.subsample(6, 6)
@@ -82,6 +82,8 @@ class HudScreen(Page):
         self.after(1000, self.render_message, user)
 
     def render(self, user):
+        self.user = user
+        self.dispense_button.configure(command=lambda: CONTROLLER.show_page("DispenserPage", user))
         self.render_message(user)
         #temporary variable so you can see that it still works with less crackers (try changing it)
         cry = 348

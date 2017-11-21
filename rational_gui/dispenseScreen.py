@@ -3,6 +3,7 @@ import tkinter as tk
 from rational_gui.controller import CONTROLLER
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
+from cracker_controller import CHOREOGRAPHER
 
 #dispense screen class
 class DispenseScreen(Page):
@@ -25,3 +26,17 @@ class DispenseScreen(Page):
        
         
         print("Dispense Screen Initialised")
+
+    def on_auth_end(self):
+        CONTROLLER.show_page('HudScreen', self.user)
+
+    def verithread(self):
+        CHOREOGRAPHER.prepare_cracker()
+        time.sleep(10)
+
+
+    def render(self, data=False):
+        self.user = data
+        thread = threading.Thread(target=self.verithread)
+        thread.start()
+        wait_for_thread(thread, self.on_auth_end)

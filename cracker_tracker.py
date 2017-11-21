@@ -24,3 +24,7 @@ def update_cracker_data(user):
     SYSTEM_DATA['userDict'][user]["lastCracker"] = timeNow
 
     SYSTEM_DATA.save()
+
+def refill_crackers(amount):
+    SYSTEM_DATA['crackersLeft'] += 1
+    SYSTEM_DATA.save()
