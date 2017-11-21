@@ -2,24 +2,19 @@
 import tkinter as tk
 
 import tools
-from rational_gui import verificationScreen, hudScreen, lockedScreen, fingerprintScreen, refillScreen, adminScreen
+from rational_gui import pages
 from rational_gui.controller import CONTROLLER
 from face_recog import FACE_MANAGER
 
 FACE_MANAGER.load("recog.xml")
 
+for page in pages:
+    try:
+        CONTROLLER.add_page(page)
+    except Exception as e:
+        print("Could not start: {}".format(page.__name__))
+        raise e
 
-
-CONTROLLER.add_page(verificationScreen.VerificationScreen)
-CONTROLLER.add_page(hudScreen.HudScreen)
-CONTROLLER.add_page(lockedScreen.LockedScreen)
-CONTROLLER.add_page(fingerprintScreen.FingerprintScreen)
-CONTROLLER.add_page(refillScreen.RefillScreen)
-
-try:
-    CONTROLLER.add_page(adminScreen.AdminScreen)
-except Exception:
-    pass
 
 CONTROLLER.show_page("LockedScreen")
 tk.mainloop()
