@@ -12,13 +12,6 @@ import cv2
 from fingerprint_scanner import FingerprintScanner, FingerprintException
 from rational_utils.data_manager import SavedDict
 
-# inits camera
-try:
-    CAMERA = PiCamera()
-    CAMERA.rotation = 180
-except (NameError, PiCameraError):
-    pass
-
 SYSTEM_DATA = SavedDict("data.json")
 
 
