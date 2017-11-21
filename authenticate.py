@@ -5,9 +5,12 @@ def authenticate_face():
     user, conf = FACE_MANAGER.authenticate()
     print("User = " + str(user) + " Conf = " + str(conf))
     if not user or conf > SYSTEM_DATA['fingerprintConf']:
-        return False, 'noot'
+        return False, None
     else:
-        return True, user#
+        if conf < SYSTEM_DATA['authConf']:
+            return True, user
+        else:
+            return False, user
 
 def authenticate_finger():
     resp = FINGERPRINT_SENSOR.identify_person()

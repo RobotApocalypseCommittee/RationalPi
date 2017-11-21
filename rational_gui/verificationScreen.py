@@ -7,11 +7,7 @@ import authenticate
 import queue
 import threading
 from rational_utils.thread_tools import wait_for_thread
-
-try:
-    import tkinter_funcs
-except ImportError:
-    pass
+import time
 
 #verification class
 class VerificationScreen(Page):
@@ -52,21 +48,21 @@ class VerificationScreen(Page):
         self.thread_queue = queue.Queue()
 
     def on_auth_end(self):
-        result = self.thread_queue.get()
-
-        CONTROLLER.show_page("FingerprintScreen", result)
+        (success, user) = self.thread_queue.get()
+        if success:
+            CONTROLLER.show_page("HudScreen", user)
+        else:
+            CONTROLLER.show_page("FingerprintScreen", user)
         
     def verithread(self):
         for i in range(5, 0, -1):
             self.instruction_text.set("Photo taken in "+ str(i) + " seconds.")
+            time.sleep(1)
         success, user = authenticate.authenticate_face()
-        if success:
-            self.thread_queue.put(user)
-        else:
-            self.thread_queue.put(False)
+        self.thread_queue.put((success, user))
 
 
-    def render(self):
+    def render(self, data=False):
         thread = threading.Thread(target=self.verithread)
         thread.start()
         wait_for_thread(thread, self.on_auth_end)

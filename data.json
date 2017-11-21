@@ -10,6 +10,7 @@
     "confThreshold":"1000",
     "saveImageConf":"15",
     "fingerprintConf":"15",
+    "authConf": 5,
 
     "deviceName":"/dev/ttyAMA0"
 }
