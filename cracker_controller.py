@@ -25,7 +25,10 @@ class Choreographer:
         else:
             self.is_pouring = False
             self.board.step_stepper(2, 125, -1)
-    def calibrate(self, is_raw)
+    def calibrate(self, is_raw):
+        pass
+
+CHOREOGRAPHER = Choreographer()
 
 
     
