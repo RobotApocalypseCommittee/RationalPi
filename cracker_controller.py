@@ -20,15 +20,15 @@ class Choreographer:
 
     def move_conveyor(self, distance, direction):
         steps = round(distance*self.CONVEYOR_SCALE)
-        self.board.step_stepper(1, steps, distance)
+        self.board.step_stepper(1, steps, direction)
 
     def set_sauce(self, activeRaw=False):
         if activeRaw:
             self.is_pouring = True
-            self.board.step_stepper(2, 125, 1)
+            self.board.step_stepper(2, 70, 1)
         else:
             self.is_pouring = False
-            self.board.step_stepper(2, 125, -1)
+            self.board.step_stepper(2, 70, -1)
 
     def calibrate(self, is_raw):
         pass
