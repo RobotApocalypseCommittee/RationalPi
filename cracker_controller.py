@@ -39,7 +39,7 @@ class Choreographer:
         self.move_conveyor(90, 1)
         time.sleep(1)
         self.rotate_top(90, 1)
-        timesleep(1)
+        time.sleep(1)
         self.set_sauce(True)
         time.sleep(5)
         self.set_sauce(False)
