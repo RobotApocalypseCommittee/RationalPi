@@ -83,7 +83,7 @@ class HudScreen(Page):
 
     def render(self, user):
         self.user = user
-        self.dispense_button.configure(command=lambda: CONTROLLER.show_page("DispenserPage", user))
+        self.dispense_button.configure(command=lambda: CONTROLLER.show_page("DispenseScreen", user))
         self.render_message(user)
         #temporary variable so you can see that it still works with less crackers (try changing it)
         cry = 348
