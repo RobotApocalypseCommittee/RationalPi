@@ -153,11 +153,16 @@ class JoeBoard:
         if not (len(self.steppers) > stepper):
             print("That isnt a stepper.")
         for _ in range(times):
-            for i in range(0, 4, direction):
-                self._set_stepper_step(stepper, self.STEPPER_STEPS[i])
-                time.sleep(self.delay/1000)
+            if direction == 1:
+                for i in range(0, 4):
+                    self._set_stepper_step(stepper, self.STEPPER_STEPS[i])
+                    time.sleep(self.delay/1000)
+            else:
+                for i in range(3, -1, -1):
+                    self._set_stepper_step(stepper, self.STEPPER_STEPS[i])
+                    time.sleep(self.delay/1000)
 
-    
+        
 
 
     
