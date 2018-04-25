@@ -72,8 +72,10 @@ class HudScreen(Page):
         msg = "Welcome, {}.\n".format(SYSTEM_DATA['userDict'][user]["name"])
         if cracker_tracker.can_dispense_cracker(user):
             msg+="You can take a cracker."
+            self.dispense_button.configure(state=tk.NORMAL)
         else:
             msg+="You cannot take a cracker right now.\n"
+            self.dispense_button.configure(state=tk.DISABLED)
             lastCracker = datetime.datetime.strptime(SYSTEM_DATA['userDict'][user]["lastCracker"], "%Y-%m-%dT%H:%M:%S")
             s = (datetime.datetime.today() - lastCracker + datetime.timedelta(hours=12)).total_seconds()
             msg += '{:02}:{:02}:{:02}'.format(s // 3600, s % 3600 // 60, s % 60)
