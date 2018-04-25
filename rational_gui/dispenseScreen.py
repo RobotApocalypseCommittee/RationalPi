@@ -35,12 +35,14 @@ class DispenseScreen(Page):
         CONTROLLER.show_page('HudScreen', self.user)
 
     def verithread(self):
-        CHOREOGRAPHER.prepare_cracker()
+        CHOREOGRAPHER.prepare_cracker(self.cheese, self.sauce)
         time.sleep(10)
 
 
     def render(self, data=False):
-        self.user = data
+        self.user = data[0]
+        self.cheese = data[1]
+        self.sauce = data[2]
         thread = threading.Thread(target=self.verithread)
         thread.start()
         wait_for_thread(thread, self.on_auth_end)

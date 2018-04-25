@@ -51,9 +51,17 @@ class HudScreen(Page):
         lock_button.image = lockIco
         lock_button.place(x=720, y=30)
 
+        self.sauceVar = tk.IntVar()
+        cs = tk.Checkbutton(self, text="Sauce", variable=self.sauceVar)
+        cs.place(x=370, y=235)
+
+        self.cheeseVar = tk.IntVar()
+        c = tk.Checkbutton(self, text="Cheese", variable=self.cheeseVar)
+        c.place(x=370, y=235)
+
         #dispense button stuff
         realCracker = realCracker.subsample(4, 4)
-        self.dispense_button = tk.Button(self, image=realCracker, bg="black", command=lambda: CONTROLLER.show_page("DispenseScreen"), activebackground="black", fg="white")
+        self.dispense_button = tk.Button(self, image=realCracker, bg="black", command=lambda: self.dispatch_dispense, activebackground="black", fg="white")
         self.dispense_button.image = realCracker
         self.dispense_button.place(x=370, y=245)
 
@@ -83,9 +91,13 @@ class HudScreen(Page):
         self.info_var.set(msg)
         self.after(1000, self.render_message, user)
 
+    def dispatch_dispense(self):
+        cheese = bool(self.cheeseVar.get())
+        sauce = bool(self.sauceVar.get())
+        CONTROLLER.show_page("DispenseScreen", [self.user, cheese, sauce])
+
     def render(self, user):
         self.user = user
-        self.dispense_button.configure(command=lambda: CONTROLLER.show_page("DispenseScreen", user))
         self.render_message(user)
         #temporary variable so you can see that it still works with less crackers (try changing it)
         cry = 348

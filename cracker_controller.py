@@ -12,7 +12,7 @@ class Choreographer:
         self.is_pouring = False
         self.board.add_stepper(0, 1)
         self.board.add_stepper(2, 3)
-        self.board.add_stepper(4, 5)
+        self.board.add_motor(4)
 
     def rotate_top(self, angle, direction):
         steps = round(self.STEPS*(angle/360))
@@ -22,28 +22,30 @@ class Choreographer:
         steps = round(distance*self.CONVEYOR_SCALE)
         self.board.step_stepper(1, steps, direction)
 
-    def set_sauce(self, activeRaw=False):
-        if activeRaw:
-            self.is_pouring = True
-            self.board.step_stepper(2, 70, 1)
-        else:
-            self.is_pouring = False
-            self.board.step_stepper(2, 70, -1)
+    def pour_sauce(self, duration):
+        self.board.set_motor(0, 1, 1)
+        time.sleep(duration)
+        self.board.set_motor(0, 0, 0)
 
     def calibrate(self, is_raw):
         pass
 
-    def prepare_cracker(self):
+    def prepare_cracker(self, cheese, sauce):
+        # Collect Cracker
         self.rotate_top(90, 1)
         time.sleep(1)
-        self.move_conveyor(90, 1)
-        time.sleep(1)
+        self.rotate_top(90, 1)
+        if cheese:
+            # Dispense Cheese
+            self.move_conveyor(90, 1)
+            time.sleep(1)
+        # Move cracker along
         self.rotate_top(90, 1)
         time.sleep(1)
-        self.set_sauce(True)
-        time.sleep(5)
-        self.set_sauce(False)
-        time.sleep(5)
+        if sauce:
+            # Dispense Sauce
+            self.pour_sauce(2)
+        # Move cracker along
         self.rotate_top(90, 1)
         time.sleep(2)
 
