@@ -10,7 +10,7 @@ def can_dispense_cracker(user):
         return False
 
     lastCracker = datetime.datetime.strptime(SYSTEM_DATA['userDict'][user]["lastCracker"], "%Y-%m-%dT%H:%M:%S")
-    if lastCracker + datetime.timedelta(hours=12) > datetime.datetime.today():
+    if lastCracker + datetime.timedelta(seconds=30) > datetime.datetime.today():
         return False
 
     return True

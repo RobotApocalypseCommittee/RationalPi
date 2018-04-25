@@ -7,6 +7,8 @@ from rational_gui.page import Page
 from cracker_controller import CHOREOGRAPHER
 from rational_utils.thread_tools import wait_for_thread
 
+import time
+
 #dispense screen class
 class DispenseScreen(Page):
     def __init__(self, parent):
