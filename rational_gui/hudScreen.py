@@ -53,11 +53,11 @@ class HudScreen(Page):
 
         self.sauceVar = tk.IntVar()
         cs = tk.Checkbutton(self, text="Sauce", variable=self.sauceVar)
-        cs.place(x=370, y=235)
+        cs.place(x=370, y=300)
 
         self.cheeseVar = tk.IntVar()
         c = tk.Checkbutton(self, text="Cheese", variable=self.cheeseVar)
-        c.place(x=370, y=235)
+        c.place(x=370, y=325)
 
         #dispense button stuff
         realCracker = realCracker.subsample(4, 4)
