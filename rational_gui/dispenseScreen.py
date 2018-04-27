@@ -5,6 +5,7 @@ from rational_gui.controller import CONTROLLER
 from rational_gui.images import get_imagepath
 from rational_gui.page import Page
 from cracker_controller import CHOREOGRAPHER
+import cracker_tracker
 from rational_utils.thread_tools import wait_for_thread
 
 import time
@@ -37,6 +38,7 @@ class DispenseScreen(Page):
     def verithread(self):
         CHOREOGRAPHER.prepare_cracker(self.cheese, self.sauce)
         time.sleep(10)
+        cracker_tracker.update_cracker_data(self.user)
 
 
     def render(self, data=False):
