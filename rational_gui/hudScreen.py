@@ -61,7 +61,7 @@ class HudScreen(Page):
 
         #dispense button stuff
         realCracker = realCracker.subsample(4, 4)
-        self.dispense_button = tk.Button(self, image=realCracker, bg="black", command=lambda: self.dispatch_dispense, activebackground="black", fg="white")
+        self.dispense_button = tk.Button(self, image=realCracker, bg="black", command=self.dispatch_dispense, activebackground="black", fg="white")
         self.dispense_button.image = realCracker
         self.dispense_button.place(x=370, y=245)
 
@@ -92,6 +92,7 @@ class HudScreen(Page):
         self.after(1000, self.render_message, user)
 
     def dispatch_dispense(self):
+        print("YOOT DISPATCH")
         cheese = bool(self.cheeseVar.get())
         sauce = bool(self.sauceVar.get())
         CONTROLLER.show_page("DispenseScreen", [self.user, cheese, sauce])
